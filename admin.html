@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>愿由ъ옄 ??쒕낫??| ?щ쫫?ъ감 鍮꾩슜 ?뺤궛</title>
+  <meta name="description" content="2026 李얠븘媛???щ쫫?ъ감 - 鍮꾩슜 ?뺤궛 愿由ъ옄 ??쒕낫??>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <style>
+    :root {
+      --font: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      --lg-red: #A50034; --lg-red-dark: #8B002C; --lg-red-deeper: #6D0022;
+      --primary-50: #FFF1F3; --primary-100: #FFE0E5; --primary-200: #FFC5CF;
+      --primary-300: #FF9EAE; --primary-700: #A50034;
+      --gray-50: #FAFAFA; --gray-100: #F5F5F5; --gray-200: #E8E8E8;
+      --gray-300: #D6D6D6; --gray-400: #A3A3A3; --gray-500: #737373;
+      --gray-600: #525252; --gray-700: #404040; --gray-800: #262626; --gray-900: #171717;
+      --success: #10B981; --success-bg: #ECFDF5;
+      --warning: #F59E0B; --warning-bg: #FFFBEB;
+      --error: #EF4444; --error-bg: #FEF2F2;
+      --info: #6366F1; --info-bg: #EEF2FF;
+      --radius: 16px; --radius-md: 12px; --radius-sm: 8px; --radius-xs: 6px;
+      --shadow: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
+      --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--gray-100); color: var(--gray-800); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    input, select, button { font-family: var(--font); }
+
+    /* ===== HEADER ===== */
+    .header {
+      background: linear-gradient(160deg, var(--gray-900) 0%, #2D0A14 40%, var(--lg-red) 100%);
+      padding: 32px 24px 40px; position: relative; overflow: hidden;
+    }
+    .header::after {
+      content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 36px;
+      background: var(--gray-100); clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    .header-inner {
+      max-width: 1100px; margin: 0 auto; position: relative; z-index: 1;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .header-left h1 { color: #fff; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+    .header-left p { color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 300; margin-top: 2px; }
+    .header-badge {
+      background: rgba(255,255,255,0.12); backdrop-filter: blur(8px);
+      color: rgba(255,255,255,0.9); padding: 6px 16px; border-radius: 20px;
+      font-size: 12px; font-weight: 600; border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    /* ===== CONTAINER ===== */
+    .container { max-width: 1100px; margin: -8px auto 40px; padding: 0 16px; position: relative; z-index: 2; }
+
+    /* ===== STAT CARDS ===== */
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+    .stat-card {
+      background: #fff; border-radius: var(--radius-md); padding: 20px;
+      border: 1px solid var(--gray-200); box-shadow: var(--shadow);
+      transition: var(--transition); animation: cardIn 0.4s ease-out both;
+    }
+    .stat-card:hover { box-shadow: var(--shadow-md); }
+    @keyframes cardIn { from { opacity: 0; transform: translateY(8px); } }
+    .stat-card:nth-child(2) { animation-delay: 0.05s; }
+    .stat-card:nth-child(3) { animation-delay: 0.1s; }
+    .stat-card:nth-child(4) { animation-delay: 0.15s; }
+    .stat-label { font-size: 12px; color: var(--gray-400); font-weight: 500; margin-bottom: 6px; display: flex; align-items: center; gap: 5px; }
+    .stat-value { font-size: 28px; font-weight: 900; color: var(--gray-900); letter-spacing: -1px; }
+    .stat-value.red { color: var(--lg-red); }
+    .stat-value.green { color: var(--success); }
+    .stat-sub { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
+
+    /* ===== UPLOAD AREA ===== */
+    .upload-card {
+      background: #fff; border-radius: var(--radius); border: 1px solid var(--gray-200);
+      padding: 24px; margin-bottom: 20px; box-shadow: var(--shadow);
+      animation: cardIn 0.4s ease-out 0.15s both;
+    }
+    .upload-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .upload-title { font-size: 16px; font-weight: 700; color: var(--gray-900); display: flex; align-items: center; gap: 8px; }
+    .dropzone {
+      border: 2px dashed var(--gray-200); border-radius: var(--radius-md);
+      padding: 32px 20px; text-align: center; cursor: pointer;
+      transition: var(--transition); background: var(--gray-50);
+    }
+    .dropzone:hover { border-color: var(--primary-300); background: var(--primary-50); }
+    .dropzone.drag-over { border-color: var(--lg-red); background: var(--primary-50); box-shadow: 0 0 0 4px rgba(165,0,52,0.06); }
+    .dz-icon { font-size: 36px; margin-bottom: 6px; display: block; }
+    .dz-text { font-size: 14px; color: var(--gray-500); font-weight: 500; }
+    .dz-hint { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+    .dz-btn {
+      display: inline-block; margin-top: 10px; padding: 8px 20px;
+      background: var(--lg-red); color: #fff; border-radius: 20px;
+      font-size: 13px; font-weight: 600; pointer-events: none;
+    }
+    .file-input { display: none; }
+
+    /* Processing indicator */
+    .processing {
+      display: none; align-items: center; gap: 10px;
+      padding: 16px; background: var(--info-bg); border-radius: var(--radius-sm);
+      margin-top: 12px; font-size: 13px; color: var(--gray-600);
+    }
+    .processing.active { display: flex; }
+    .spinner {
+      width: 18px; height: 18px; border: 2.5px solid var(--gray-200);
+      border-top-color: var(--lg-red); border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ===== TABLE CARD ===== */
+    .table-card {
+      background: #fff; border-radius: var(--radius); border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow); overflow: hidden; margin-bottom: 20px;
+      animation: cardIn 0.4s ease-out 0.2s both;
+    }
+    .table-toolbar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 20px; border-bottom: 1px solid var(--gray-200);
+    }
+    .table-title { font-size: 15px; font-weight: 700; color: var(--gray-900); display: flex; align-items: center; gap: 8px; }
+    .table-actions { display: flex; gap: 8px; }
+    .search-box {
+      height: 36px; padding: 0 12px 0 34px; border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-sm); font-size: 13px; color: var(--gray-800);
+      background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23A3A3A3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat 12px center;
+      outline: none; transition: var(--transition); width: 220px;
+    }
+    .search-box:focus { border-color: var(--lg-red); box-shadow: 0 0 0 2px rgba(165,0,52,0.06); }
+
+    .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .data-table thead th {
+      background: var(--gray-50); color: var(--gray-500); font-weight: 600;
+      font-size: 11.5px; padding: 10px 14px; text-align: left;
+      border-bottom: 2px solid var(--gray-200); white-space: nowrap;
+      text-transform: uppercase; letter-spacing: 0.3px;
+      cursor: pointer; user-select: none;
+    }
+    .data-table thead th:hover { color: var(--gray-700); }
+    .data-table tbody tr {
+      cursor: pointer; transition: var(--transition);
+    }
+    .data-table tbody tr:hover { background: var(--primary-50); }
+    .data-table tbody td {
+      padding: 12px 14px; border-bottom: 1px solid var(--gray-100);
+      vertical-align: middle;
+    }
+    .td-center { font-weight: 600; color: var(--gray-800); }
+    .td-amount { font-weight: 700; color: var(--lg-red); text-align: right; font-variant-numeric: tabular-nums; }
+    .td-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;
+    }
+
+    .status-completed { background: var(--success-bg); color: var(--success); }
+    .status-submitted { background: var(--warning-bg); color: var(--warning); }
+    .td-date { color: var(--gray-500); font-size: 12px; }
+    .empty-state {
+      text-align: center; padding: 60px 20px; color: var(--gray-400);
+    }
+    .empty-icon { font-size: 48px; margin-bottom: 8px; display: block; opacity: 0.5; }
+    .empty-text { font-size: 14px; }
+
+    /* ===== UNSUBMITTED LIST ===== */
+    .pending-card {
+      background: #fff; border-radius: var(--radius); border: 1px solid var(--gray-200);
+      padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 20px;
+      animation: cardIn 0.4s ease-out 0.25s both;
+    }
+    .pending-title { font-size: 15px; font-weight: 700; color: var(--gray-900); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .center-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px;
+    }
+    .center-chip {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 14px; border-radius: var(--radius-sm);
+      font-size: 13px; border: 1px solid var(--gray-200);
+      transition: var(--transition);
+    }
+    .center-chip.submitted { background: var(--warning-bg); border-color: #FDE68A; color: #D97706; }
+    .center-chip.submitted .chip-icon { color: #D97706; }
+    .center-chip.completed { background: var(--success-bg); border-color: #A7F3D0; color: var(--success); }
+    .center-chip.completed .chip-icon { color: var(--success); }
+    .center-chip.pending { background: var(--gray-50); color: var(--gray-500); }
+    .chip-icon { font-size: 14px; }
+
+    /* ===== DIVISION GROUPINGS ===== */
+    .division-section {
+      margin-bottom: 24px;
+    }
+    .division-section:last-child {
+      margin-bottom: 0;
+    }
+    .division-header {
+      font-size: 13px; font-weight: 700; color: var(--gray-700);
+      margin-bottom: 10px; border-bottom: 1.5px solid var(--gray-100);
+      padding-bottom: 6px; display: flex; align-items: center; gap: 6px;
+    }
+
+    /* ===== DETAIL MODAL ===== */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 10000;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+      align-items: flex-start; justify-content: center;
+      padding: 40px 16px; overflow-y: auto;
+    }
+    .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease; }
+    @keyframes fadeIn { from { opacity: 0; } }
+    .modal-box {
+      background: #fff; border-radius: var(--radius); width: 100%;
+      max-width: 740px; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      animation: modalIn 0.3s ease-out;
+    }
+    @keyframes modalIn { from { opacity: 0; transform: translateY(-20px); } }
+    .modal-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 24px; border-bottom: 1px solid var(--gray-200);
+    }
+    .modal-title { font-size: 17px; font-weight: 700; }
+    .modal-close-btn {
+      width: 32px; height: 32px; border-radius: 50%; border: none;
+      background: var(--gray-100); color: var(--gray-500); font-size: 16px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: var(--transition);
+    }
+    .modal-close-btn:hover { background: var(--gray-200); }
+    .modal-body { padding: 24px; }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .detail-item { }
+    .detail-label { font-size: 11px; color: var(--gray-400); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 2px; }
+    .detail-value { font-size: 14px; color: var(--gray-800); font-weight: 500; }
+    .detail-section-title { font-size: 14px; font-weight: 700; color: var(--gray-800); margin: 20px 0 10px; display: flex; align-items: center; gap: 6px; }
+    .detail-expense-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+    .detail-expense-table th {
+      background: var(--gray-50); color: var(--gray-500); font-size: 11px;
+      font-weight: 600; padding: 8px 12px; text-align: left;
+      border-bottom: 2px solid var(--gray-200);
+    }
+    .detail-expense-table td { padding: 8px 12px; border-bottom: 1px solid var(--gray-100); }
+    .detail-expense-table tr:last-child td { font-weight: 700; border-top: 2px solid var(--gray-200); }
+    .detail-photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; }
+    .detail-photo {
+      aspect-ratio: 1; border-radius: var(--radius-xs); overflow: hidden;
+      border: 1px solid var(--gray-200); cursor: pointer;
+    }
+    .detail-photo img { width: 100%; height: 100%; object-fit: cover; display: block; transition: var(--transition); }
+    .detail-photo:hover img { transform: scale(1.05); }
+
+    /* Image full modal */
+    .img-modal {
+      display: none; position: fixed; inset: 0; z-index: 20000;
+      background: rgba(0,0,0,0.85); align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .img-modal.active { display: flex; }
+    .img-modal-content-wrap {
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
+      max-width: 90vw; max-height: 90vh;
+    }
+    .img-modal img { max-width: 100%; max-height: 75vh; border-radius: var(--radius-sm); display: block; }
+    .img-modal-actions { display: flex; gap: 10px; }
+
+    .detail-photo-wrap {
+      display: flex; flex-direction: column; gap: 6px; align-items: stretch;
+    }
+    .photo-download-link {
+      font-size: 11px; text-decoration: none; color: var(--gray-500);
+      background: var(--gray-100); border-radius: 4px; padding: 4px 0;
+      text-align: center; font-weight: 600; transition: var(--transition);
+    }
+    .photo-download-link:hover {
+      background: var(--gray-200); color: var(--gray-700);
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 9px 18px; border-radius: var(--radius-sm); font-size: 13px;
+      font-weight: 600; cursor: pointer; transition: var(--transition);
+      border: none; outline: none; white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--lg-red); color: #fff;
+      box-shadow: 0 2px 6px rgba(165,0,52,0.2);
+    }
+    .btn-primary:hover { background: var(--lg-red-dark); transform: translateY(-1px); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .btn-secondary { background: #fff; color: var(--gray-600); border: 1.5px solid var(--gray-200); }
+    .btn-secondary:hover { background: var(--gray-50); border-color: var(--gray-300); }
+    .btn-sm { padding: 6px 12px; font-size: 12px; }
+
+    /* ===== TOAST ===== */
+    .toast-container { position: fixed; top: 16px; right: 16px; z-index: 30000; display: flex; flex-direction: column; gap: 6px; }
+    .toast {
+      display: flex; align-items: center; gap: 8px; padding: 11px 16px;
+      border-radius: var(--radius-sm); font-size: 13px; font-weight: 500;
+      box-shadow: var(--shadow-lg); min-width: 260px; max-width: 400px;
+      animation: toastIn 0.3s ease-out; border-left: 4px solid; background: #fff;
+    }
+    @keyframes toastIn { from { opacity: 0; transform: translateX(30px); } }
+    .toast-exit { animation: toastOut 0.2s ease-in forwards; }
+    @keyframes toastOut { to { opacity: 0; transform: translateX(30px); } }
+    .toast-info { border-color: var(--info); }
+    .toast-success { border-color: var(--success); }
+    .toast-warning { border-color: var(--warning); }
+    .toast-error { border-color: var(--error); }
+
+    /* ===== TOP NAV ===== */
+    .top-nav {
+      background: var(--gray-900); display: flex; justify-content: space-between;
+      align-items: center; padding: 0 24px; height: 42px; font-size: 12.5px;
+    }
+    .top-nav-left { display: flex; align-items: center; gap: 14px; }
+    .top-nav-role {
+      color: #fff; font-weight: 600; display: flex; align-items: center; gap: 6px;
+    }
+    .top-nav-role .role-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: #F59E0B;
+      display: inline-block; animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .top-nav-link {
+      color: var(--gray-400); text-decoration: none; padding: 4px 12px;
+      border-radius: 4px; transition: var(--transition);
+      display: flex; align-items: center; gap: 5px;
+    }
+    .top-nav-link:hover { color: #fff; background: rgba(255,255,255,0.1); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .header-inner { flex-direction: column; gap: 12px; text-align: center; }
+      .detail-grid { grid-template-columns: 1fr; }
+      .center-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+      .search-box { width: 160px; }
+      .table-toolbar { flex-direction: column; gap: 10px; align-items: stretch; }
+      .table-actions { justify-content: flex-end; }
+      .top-nav { padding: 0 12px; font-size: 11.5px; }
+    }
+    @media (max-width: 480px) {
+      .stats { grid-template-columns: 1fr 1fr; }
+      .stat-value { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAV -->
+  <nav class="top-nav">
+    <div class="top-nav-left">
+      <span class="top-nav-role"><span class="role-dot"></span> 愿由ъ옄 紐⑤뱶</span>
+    </div>
+    <a href="index.html" class="top-nav-link">?뱷 利앸튃 ?쒖텧 ?섏씠吏 ??/a>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-left">
+        <h1>?뱤 愿由ъ옄 ??쒕낫??/h1>
+        <p>2026 李얠븘媛???щ쫫?ъ감 쨌 鍮꾩슜 ?뺤궛 痍⑦빀</p>
+      </div>
+      <div class="header-badge">?룼 ADMIN</div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="container">
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-label">?뱿 ?쒖텧 ?꾨즺</div>
+        <div class="stat-value" id="statSubmitted">0</div>
+        <div class="stat-sub" id="statSubmittedSub">?꾩껜 <span id="statTotal">0</span>媛??쇳꽣 以?/div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">??誘몄젣異?/div>
+        <div class="stat-value" id="statPending">0</div>
+        <div class="stat-sub">?꾩쭅 ?쒖텧?섏? ?딆? ?쇳꽣</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">?뮥 珥?鍮꾩슜</div>
+        <div class="stat-value red" id="statTotalCost">0??/div>
+        <div class="stat-sub">紐⑤뱺 ?쇳꽣 ?⑹궛</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">???뺤궛 ?꾨즺</div>
+        <div class="stat-value green" id="statProcessed">0</div>
+        <div class="stat-sub" id="statProcessedSub">?뺤궛 ?湲?0嫄?/div>
+      </div>
+    </div>
+
+    <!-- CENTER STATUS -->
+    <div class="pending-card" id="pendingCard">
+      <div class="pending-title">?룫 ?쇳꽣蹂??쒖텧 ?꾪솴</div>
+      <div id="centerGrid"></div>
+    </div>
+
+    <!-- DATA TABLE -->
+    <div class="table-card">
+      <div class="table-toolbar">
+        <div class="table-title">?뱥 ?뺤궛 ?댁뿭 <span style="font-size:12px; color:var(--gray-400); font-weight:400; margin-left:4px;" id="tableCount"></span></div>
+        <div class="table-actions">
+          <input type="text" class="search-box" id="searchBox" placeholder="?쇳꽣紐? ?묒꽦??寃??.." oninput="filterTable()">
+          <button class="btn btn-sm btn-secondary" onclick="clearAll()">?꾩껜 珥덇린??/button>
+          <button class="btn btn-sm btn-primary" id="exportBtn" onclick="exportMasterExcel()" disabled>?뱿 Excel ?대낫?닿린</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th onclick="sortTable(0)">?쇳꽣紐?/th>
+              <th onclick="sortTable(1)">?대떦</th>
+              <th onclick="sortTable(2)">?묒꽦??/th>
+              <th onclick="sortTable(3)">踰뺤씤移대뱶</th>
+              <th onclick="sortTable(4)">鍮꾩슜</th>
+              <th onclick="sortTable(5)">諛⑸Ц ?대떦/?ㅼ옣</th>
+              <th onclick="sortTable(6)">?곹깭</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr><td colspan="7">
+              <div class="empty-state">
+                <span class="empty-icon">?벊</span>
+                <div class="empty-text">?곗씠?곕쿋?댁뒪媛 鍮꾩뼱 ?덉뒿?덈떎. ?쒖텧 ?붾㈃?먯꽌 利앸튃???묒꽦??二쇱꽭??</div>
+              </div>
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- PASSCODE AUTH MODAL -->
+  <div class="modal-overlay active" id="authModal" style="z-index: 20000; background: var(--gray-900);">
+    <div class="success-modal-content" style="max-width: 380px; padding: 40px 24px; border-top: 4px solid var(--lg-red);">
+      <div class="success-icon" style="background: var(--primary-50); color: var(--lg-red); font-size: 32px; width: 64px; height: 64px;">?뵏</div>
+      <div class="success-title" style="font-size: 18px; margin-top: 12px; margin-bottom: 6px;">?뺤궛 ?대떦???몄쬆</div>
+      <p class="success-desc" style="font-size: 13px; margin-bottom: 20px;">愿由ъ옄 ??쒕낫?쒖뿉 ?묒냽?섍린 ?꾪빐<br>?대뱶誘??⑥뒪?뚮뱶瑜??낅젰??二쇱꽭??</p>
+      <div style="margin-bottom: 20px;">
+        <input type="password" id="authPasscode" class="form-input" placeholder="?⑥뒪?뚮뱶 ?낅젰" style="text-align: center; letter-spacing: 4px; font-size: 18px; font-weight: 700; height: 46px;" onkeydown="if(event.key==='Enter') verifyAdminPasscode()">
+      </div>
+      <button type="button" class="btn btn-primary btn-block" style="height: 44px; font-size: 14px;" onclick="verifyAdminPasscode()">?몄쬆?섍린</button>
+    </div>
+  </div>
+
+  <!-- DETAIL MODAL -->
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title" id="modalTitle">?곸꽭 ?뺣낫</div>
+        <button class="modal-close-btn" onclick="closeDetailModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+
+
+  <!-- TOAST -->
+  <div class="toast-container" id="toastContainer"></div>
+
+
+  <script>
+    // ========== CENTER DATA (same as submission form) ==========
+    const CENTER_DATA = [
+      // ===== ?섎룄沅뚯쨷遺 =====
+      { division: '?섎룄沅뚯쨷遺', center: '媛뺣궓異쒖옣?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '媛뺣룞?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '媛뺣턿?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '媛뺤꽌?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '寃쎄린愿묒＜異쒖옣?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅CC&S?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '愿?낆꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '怨좉컼媛移섑쁺?좊떞?? },
+      { division: '?섎룄沅뚯쨷遺', center: '愿묐챸?쒕퉬?ㅼ꽱??, branch: '', visitor: '?섎룄沅뚯뿭?됯컯?뷀??? },
+      { division: '?섎룄沅뚯쨷遺', center: '愿묒쭊?쒕퉬?ㅼ꽱??, branch: '', visitor: 'CC&S?꾨왂?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '援щ━?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '湲덉쿇?쒕퉬?ㅼ꽱??, branch: '', visitor: '?섎룄沅뚯뿭?됯컯?뷀??? },
+      { division: '?섎룄沅뚯쨷遺', center: '源?ъ꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅CC&S?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '?⑤룞?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅CC&S?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '?⑥닔?먯꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '?⑥뼇二쇱꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅CC&S?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '?⑥씤泥쒖꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?섎룄沅뚯뿭?됯컯?뷀??? },
+      { division: '?섎룄沅뚯쨷遺', center: '?몄썝?쒕퉬?ㅼ꽱??, branch: '', visitor: '?섎룄沅뚯뿭?됯컯?뷀??? },
+      { division: '?섎룄沅뚯쨷遺', center: '?移섏꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '怨좉컼媛移섑쁺?좊떞?? },
+      { division: '?섎룄沅뚯쨷遺', center: '?꾨큺?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '?숇?臾몄꽌鍮꾩뒪?쇳꽣', branch: '', visitor: 'HR?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '?숉깂?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '遺泥쒖꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '遺곸닔?먯꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅CC&S?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '遺곸씤泥쒖꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '?쒖븞?곗꽌鍮꾩뒪?쇳꽣', branch: '', visitor: 'HR?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '?쒖씤泥쒖꽌鍮꾩뒪?쇳꽣', branch: '', visitor: 'CC&S遺?덉떎' },
+      { division: '?섎룄沅뚯쨷遺', center: '?쒖큹?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '?깅궓?쒕퉬?ㅼ꽱??, branch: '遺꾨떦?쒕퉬?ㅼ꽱??, visitor: '以묐???웾媛뺥솕??? },
+      { division: '?섎룄沅뚯쨷遺', center: '?깅궓?쒕퉬?ㅼ꽱??, branch: '', visitor: '以묐???웾媛뺥솕??? },
+      { division: '?섎룄沅뚯쨷遺', center: '?≫뙆?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '?덉궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '以묐???웾媛뺥솕??? },
+      { division: '?섎룄沅뚯쨷遺', center: '?덉뼇?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅CC&S?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '?묒＜?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '?묒쿇?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '?곗닔?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅CC&S?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '?곷벑?ъ꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '?ㅼ궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '以묐???웾媛뺥솕??? },
+      { division: '?섎룄沅뚯쨷遺', center: '?⑹궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '?섎룄沅뚯뿭?됯컯?뷀??? },
+      { division: '?섎룄沅뚯쨷遺', center: '?⑹씤異쒖옣?쒕퉬?ㅼ꽱??, branch: '', visitor: 'CC&S??웾媛쒕컻?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '??됱꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅CC&S?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '?섏솗?쒕퉬?ㅼ꽱??, branch: '', visitor: '以묐???웾媛뺥솕??? },
+      { division: '?섎룄沅뚯쨷遺', center: '?섏젙遺?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '?쇱궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '二쎌쟾?쒕퉬?ㅼ꽱??, branch: '', visitor: '以묐???웾媛뺥솕??? },
+      { division: '?섎룄沅뚯쨷遺', center: '異⑸Т濡쒖뿭?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '?뚯＜?쒕퉬?ㅼ꽱??, branch: '', visitor: 'HR?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '?됲깮?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '?꾨━誘몄뾼耳?댁꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '怨좉컼媛移섑쁺?좊떞?? },
+      { division: '?섎룄沅뚯쨷遺', center: '?섎궓?쒕퉬?ㅼ꽱??, branch: '', visitor: 'HR?대떦' },
+      { division: '?섎룄沅뚯쨷遺', center: '?띾???꽌鍮꾩뒪?쇳꽣', branch: '', visitor: 'Contact Center?댁쁺吏?먯떎' },
+      { division: '?섎룄沅뚯쨷遺', center: '?붿젙?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
+      // ===== ?쒕궓遺 =====
+      { division: '?쒕궓遺', center: '李쎌썝?쒕퉬?ㅼ꽱??, branch: '', visitor: 'CC&S??웾媛쒕컻?대떦' },
+      { division: '?쒕궓遺', center: '?⑤?援ъ꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?댁쇅CC&S?대떦' },
+      { division: '?쒕궓遺', center: '?뺤쿇?쒕퉬?ㅼ꽱??, branch: '', visitor: '寃쎌쁺愿由щ떞?? },
+      { division: '?쒕궓遺', center: '遺곸슱?곗꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅CC&S?대떦' },
+      { division: '?쒕궓遺', center: '?쒕㈃?쒕퉬?ㅼ꽱??, branch: '', visitor: 'CC&S?꾨왂?대떦' },
+      { division: '?쒕궓遺', center: '?댁슫??쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅CC&S?대떦' },
+      { division: '?쒕궓遺', center: '遺곷?援ъ꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅CC&S?대떦' },
+      { division: '?쒕궓遺', center: '吏꾩＜?쒕퉬?ㅼ꽱??, branch: '', visitor: 'HR?대떦' },
+      { division: '?쒕궓遺', center: '留덉궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '寃쎌쁺愿由щ떞?? },
+      { division: '?쒕궓遺', center: '源?댁꽌鍮꾩뒪?쇳꽣', branch: '', visitor: 'HR?대떦' },
+      { division: '?쒕궓遺', center: '?쒖＜?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅CC&S?대떦' },
+      { division: '?쒕궓遺', center: '?쒖쟾二쇱꽌鍮꾩뒪?쇳꽣', branch: '', visitor: 'CC&S??웾媛쒕컻?대떦' },
+      { division: '?쒕궓遺', center: '?숇옒?쒕퉬?ㅼ꽱??, branch: '', visitor: 'HR?대떦' },
+      { division: '?쒕궓遺', center: '?쒓??ъ꽌鍮꾩뒪?쇳꽣', branch: '', visitor: 'HR?대떦' },
+      { division: '?쒕궓遺', center: '?⑥슱?곗꽌鍮꾩뒪?쇳꽣', branch: '', visitor: 'HR?대떦' },
+      { division: '?쒕궓遺', center: '紐⑺룷?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅CC&S?대떦' },
+      { division: '?쒕궓遺', center: '?숆킅二쇱꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅CC&S?대떦' },
+      { division: '?쒕궓遺', center: '?덈룞?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅CC&S?대떦' },
+      { division: '?쒕궓遺', center: '寃쎌궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
+      { division: '?쒕궓遺', center: '寃쎌＜?쒕퉬?ㅼ꽱??, branch: '?곸쿇?쒕퉬?ㅼ꽱??, visitor: '?⑤???웾媛뺥솕??? },
+      { division: '?쒕궓遺', center: '寃쎌＜?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
+      { division: '?쒕궓遺', center: '愿묒궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
+      { division: '?쒕궓遺', center: '援щ??쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
+      { division: '?쒕궓遺', center: '援곗궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
+      { division: '?쒕궓遺', center: '源泥쒖꽌鍮꾩뒪?쇳꽣', branch: '臾멸꼍?쒕퉬?ㅼ꽱??, visitor: '?⑤???웾媛뺥솕??? },
+      { division: '?쒕궓遺', center: '源泥쒖꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒕궓遺?대떦' },
+      { division: '?쒕궓遺', center: '源?댁꽌鍮꾩뒪?쇳꽣', branch: '諛?묒꽌鍮꾩뒪?쇳꽣', visitor: '?⑤???웾媛뺥솕??? },
+      { division: '?쒕궓遺', center: '??곗꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒕궓遺?대떦' },
+      { division: '?쒕궓遺', center: '?숇?援ъ꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒕궓遺?대떦' },
+      { division: '?쒕궓遺', center: '紐⑺룷?쒕퉬?ㅼ꽱??, branch: '?대궓?쒕퉬?ㅼ꽱??, visitor: '?쒕???웾媛뺥솕??? },
+      { division: '?쒕궓遺', center: '?ы븯?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
+      { division: '?쒕궓遺', center: '?쒓킅二쇱꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒕궓遺?대떦' },
+      { division: '?쒕궓遺', center: '?쒕?援ъ꽌鍮꾩뒪?쇳꽣', branch: '嫄곗갹?쒕퉬?ㅼ꽱??, visitor: '?쒕궓遺?대떦' },
+      { division: '?쒕궓遺', center: '?쒕?援ъ꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒕궓遺?대떦' },
+      { division: '?쒕궓遺', center: '?쒖쟾二쇱꽌鍮꾩뒪?쇳꽣', branch: '?뺤쓭?쒕퉬?ㅼ꽱??, visitor: '?쒕???웾媛뺥솕??? },
+      { division: '?쒕궓遺', center: '?쒖쿇?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
+      { division: '?쒕궓遺', center: '?덈룞?쒕퉬?ㅼ꽱??, branch: '?곸＜?쒕퉬?ㅼ꽱??, visitor: '?⑤???웾媛뺥솕??? },
+      { division: '?쒕궓遺', center: '?묒궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
+      { division: '?쒕궓遺', center: '?ъ닔?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
+      { division: '?쒕궓遺', center: '?듭궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
+      { division: '?쒕궓遺', center: '?꾩＜?쒕퉬?ㅼ꽱??, branch: '?⑥썝?쒕퉬?ㅼ꽱??, visitor: '?쒕???웾媛뺥솕??? },
+      { division: '?쒕궓遺', center: '?꾩＜?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
+      { division: '?쒕궓遺', center: '?듭쁺?쒕퉬?ㅼ꽱??, branch: '嫄곗젣?쒕퉬?ㅼ꽱??, visitor: '?⑤???웾媛뺥솕??? },
+      { division: '?쒕궓遺', center: '?듭쁺?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
+      { division: '?쒕궓遺', center: '?ы빆?쒕퉬?ㅼ꽱??, branch: '?곷뜒?쒕퉬?ㅼ꽱??, visitor: '?⑤???웾媛뺥솕??? },
+      { division: '?쒕궓遺', center: '?ы빆?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
+      // ===== 媛뺤썝??=====
+      { division: '媛뺤썝??, center: '媛뺣쫱?쒕퉬?ㅼ꽱??, branch: '?띿큹?쒕퉬?ㅼ꽱??, visitor: '?쒓뎅媛뺤썝?ㅼ옣' },
+      { division: '媛뺤썝??, center: '媛뺣쫱?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅媛뺤썝?ㅼ옣' },
+      { division: '媛뺤썝??, center: '?숉빐?쒕퉬?ㅼ꽱??, branch: '?쒕갚?쒕퉬?ㅼ꽱??, visitor: '?쒓뎅媛뺤썝?ㅼ옣' },
+      { division: '媛뺤썝??, center: '?숉빐?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅媛뺤썝?ㅼ옣' },
+      { division: '媛뺤썝??, center: '?먯＜?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅CC&S?대떦' },
+      { division: '媛뺤썝??, center: '?댁쿇?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅媛뺤썝?ㅼ옣' },
+      { division: '媛뺤썝??, center: '異섏쿇?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅媛뺤썝?ㅼ옣' },
+      // ===== 異⑹껌??=====
+      { division: '異⑹껌??, center: '?⑥껌二쇱꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅異⑹껌?ㅼ옣' },
+      { division: '異⑹껌??, center: '?숇??꾩꽌鍮꾩뒪?쇳꽣', branch: '', visitor: 'Contact Center?댁쁺吏?먯떎' },
+      { division: '異⑹껌??, center: '?붿궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅異⑹껌?ㅼ옣' },
+      { division: '異⑹껌??, center: '?쒕??꾩꽌鍮꾩뒪?쇳꽣', branch: '?쇱궛?쒕퉬?ㅼ꽱??, visitor: '?쒓뎅異⑹껌?ㅼ옣' },
+      { division: '異⑹껌??, center: '?쒕??꾩꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅CC&S?대떦' },
+      { division: '異⑹껌??, center: '?쒖궛?쒕퉬?ㅼ꽱??, branch: '?띿꽦?쒕퉬?ㅼ꽱??, visitor: '?쒓뎅異⑹껌?ㅼ옣' },
+      { division: '異⑹껌??, center: '?쒖궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅異⑹껌?ㅼ옣' },
+      { division: '異⑹껌??, center: '?몄쥌?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅異⑹껌?ㅼ옣' },
+      { division: '異⑹껌??, center: '?꾩궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅異⑹껌?ㅼ옣' },
+      { division: '異⑹껌??, center: '泥쒖븞?쒕퉬?ㅼ꽱??, branch: '', visitor: '?댁쇅CC&S?대떦' },
+      { division: '異⑹껌??, center: '泥?＜?쒕퉬?ㅼ꽱??, branch: '', visitor: '?멸꼍2?' },
+      { division: '異⑹껌??, center: '異⑹＜?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅異⑹껌?ㅼ옣' },
+      { division: '異⑹껌??, center: '異⑹＜?쒕퉬?ㅼ꽱??, branch: '?쒖쿇?쒕퉬?ㅼ꽱??, visitor: '?쒓뎅異⑹껌?ㅼ옣' },
+    ];
+
+    // ========== DB UTILITY (Supabase) ==========
+    async function getAllSubmissions() {
+      if (!supabaseClient) {
+        showToast('Supabase ?ㅼ젙??援ъ꽦?섏? ?딆븯?듬땲?? supabase-config.js ?뚯씪???뺤씤?섏꽭??', 'warning');
+        return [];
+      }
+      const { data, error } = await supabaseClient
+        .from('submissions')
+        .select('*')
+        .order('center_name', { ascending: true });
+
+      if (error) throw error;
+
+      return (data || []).map(row => ({
+        centerName: row.center_name,
+        branch: row.branch,
+        division: row.division,
+        visitor: row.visitor,
+        author: row.author,
+        contact: row.contact,
+        cardNumber: row.card_number,
+        submittedAt: row.submitted_at,
+        expenses: typeof row.expenses === 'string' ? JSON.parse(row.expenses) : row.expenses,
+        totalAmount: parseFloat(row.total_amount) || 0,
+        remarks: row.remarks,
+        processed: row.processed
+      }));
+    }
+
+    async function saveSubmission(sub) {
+      if (!supabaseClient) return;
+      const { data, error } = await supabaseClient
+        .from('submissions')
+        .upsert({
+          center_name: sub.centerName,
+          branch: sub.branch,
+          division: sub.division,
+          visitor: sub.visitor,
+          author: sub.author,
+          contact: sub.contact,
+          card_number: sub.cardNumber,
+          submitted_at: sub.submittedAt,
+          expenses: sub.expenses,
+          total_amount: sub.totalAmount,
+          remarks: sub.remarks,
+          processed: sub.processed
+        }, { onConflict: 'center_name' });
+
+      if (error) throw error;
+      return data;
+    }
+
+    async function deleteSubmission(centerName) {
+      if (!supabaseClient) return;
+      const { error } = await supabaseClient
+        .from('submissions')
+        .delete()
+        .eq('center_name', centerName);
+
+      if (error) throw error;
+    }
+
+    async function clearAllSubmissions() {
+      if (!supabaseClient) return;
+      const { error } = await supabaseClient
+        .from('submissions')
+        .delete()
+        .neq('center_name', '');
+
+      if (error) throw error;
+    }
+
+    // ========== STATE ==========
+    const submissions = []; // parsed submission data
+
+    // ========== INIT ==========
+    document.addEventListener('DOMContentLoaded', () => {
+      checkAdminAuth();
+      setupRealtimeListener();
+    });
+
+    function checkAdminAuth() {
+      const isAuth = localStorage.getItem('summer_pocha_admin_authenticated') === 'true';
+      if (isAuth) {
+        document.getElementById('authModal').classList.remove('active');
+        loadSubmissionsFromDB();
+      } else {
+        document.getElementById('authModal').classList.add('active');
+        setTimeout(() => document.getElementById('authPasscode').focus(), 150);
+      }
+    }
+
+    async function verifyAdminPasscode() {
+      const pwdInput = document.getElementById('authPasscode');
+      const code = pwdInput.value.trim();
+      if (!code) {
+        showToast('?⑥뒪?뚮뱶瑜??낅젰?섏꽭??', 'warning');
+        return;
+      }
+
+      if (!supabaseClient) {
+        if (code === '254501') {
+          showToast('濡쒖뺄 紐⑤뱶濡??몄쬆?섏뿀?듬땲?? (Supabase ?ㅼ젙 ?꾩슂)', 'info');
+          localStorage.setItem('summer_pocha_admin_authenticated', 'true');
+          document.getElementById('authModal').classList.remove('active');
+          loadSubmissionsFromDB();
+        } else {
+          showToast('?섎せ???⑥뒪?뚮뱶?낅땲??', 'error');
+          pwdInput.value = '';
+          pwdInput.focus();
+        }
+        return;
+      }
+
+      try {
+        const { count, error } = await supabaseClient
+          .from('admin_auth')
+          .select('*', { count: 'exact', head: true })
+          .eq('passcode', code);
+
+        if (error) throw error;
+
+        if (count > 0) {
+          showToast('?몄쬆 ?깃났!', 'success');
+          localStorage.setItem('summer_pocha_admin_authenticated', 'true');
+          document.getElementById('authModal').classList.remove('active');
+          loadSubmissionsFromDB();
+        } else {
+          showToast('?섎せ???⑥뒪?뚮뱶?낅땲??', 'error');
+          pwdInput.value = '';
+          pwdInput.focus();
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('?몄쬆 ?ㅻ쪟: ' + err.message, 'error');
+      }
+    }
+
+    function setupRealtimeListener() {
+      if (!supabaseClient) return;
+      supabaseClient
+        .channel('schema-db-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'submissions'
+          },
+          (payload) => {
+            console.log('Realtime change received:', payload);
+            loadSubmissionsFromDB();
+          }
+        )
+        .subscribe();
+    }
+
+    async function loadSubmissionsFromDB() {
+      try {
+        const data = await getAllSubmissions();
+        submissions.length = 0;
+        submissions.push(...data);
+        updateAll();
+      } catch (err) {
+        console.error('Error loading submissions from DB:', err);
+        showToast('?곗씠?곕쿋?댁뒪 ?쎄린 ?ㅽ뙣', 'error');
+      }
+    }
+
+    // ========== UPDATE UI ==========
+    function updateAll() {
+      updateStats();
+      updateCenterGrid();
+      renderTable();
+    }
+
+    function updateStats() {
+      const submitted = submissions.length;
+      const total = CENTER_DATA.length;
+      const pending = total - submitted;
+      const totalCost = submissions.reduce((s, d) => s + d.totalAmount, 0);
+      const processed = submissions.filter(s => s.processed).length;
+      const waiting = submitted - processed;
+
+      document.getElementById('statSubmitted').textContent = submitted;
+      document.getElementById('statTotal').textContent = total;
+      document.getElementById('statPending').textContent = Math.max(0, pending);
+      document.getElementById('statTotalCost').textContent = totalCost.toLocaleString('ko-KR') + '??;
+      
+      document.getElementById('statProcessed').textContent = processed;
+      document.getElementById('statProcessedSub').textContent = `?뺤궛 ?湲?${waiting}嫄?;
+      
+      document.getElementById('exportBtn').disabled = submitted === 0;
+    }
+
+    function updateCenterGrid() {
+      const grid = document.getElementById('centerGrid');
+      const subMap = {};
+      submissions.forEach(s => {
+        subMap[s.centerName] = s;
+      });
+
+      // Group centers by division
+      const groups = {};
+      CENTER_DATA.forEach(c => {
+        if (!groups[c.division]) groups[c.division] = [];
+        groups[c.division].push(c);
+      });
+
+      // Render grouped sections
+      let html = '';
+      for (const [division, centers] of Object.entries(groups)) {
+        const submittedCount = centers.filter(c => {
+          const name = c.branch ? `${c.center} ??${c.branch}` : c.center;
+          return !!subMap[name];
+        }).length;
+
+        html += `<div class="division-section">
+          <div class="division-header">?뱧 ${division} (${submittedCount}/${centers.length})</div>
+          <div class="center-grid">
+            ${centers.map(c => {
+              const name = c.branch ? `${c.center} ??${c.branch}` : c.center;
+              const sub = subMap[name];
+              
+              let stateClass = 'pending';
+              let stateIcon = '燧?;
+              
+              if (sub) {
+                if (sub.processed) {
+                  stateClass = 'completed';
+                  stateIcon = '??;
+                } else {
+                  stateClass = 'submitted';
+                  stateIcon = '?뱷';
+                }
+              }
+              
+              return `<div class="center-chip ${stateClass}">
+                <span class="chip-icon">${stateIcon}</span>
+                <span>${name}</span>
+              </div>`;
+            }).join('')}
+          </div>
+        </div>`;
+      }
+      grid.innerHTML = html;
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('tableBody');
+      if (submissions.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><span class="empty-icon">?벊</span><div class="empty-text">?곗씠?곕쿋?댁뒪媛 鍮꾩뼱 ?덉뒿?덈떎. ?쒖텧 ?붾㈃?먯꽌 利앸튃???묒꽦??二쇱꽭??</div></div></td></tr>`;
+        document.getElementById('tableCount').textContent = '';
+        return;
+      }
+      document.getElementById('tableCount').textContent = `(${submissions.length}嫄?`;
+      tbody.innerHTML = submissions.map((d, i) => `
+        <tr onclick="openDetail(${i})">
+          <td class="td-center">${d.centerName || '-'}</td>
+          <td>${d.division || '-'}</td>
+          <td>${d.author || '-'}</td>
+          <td style="font-family:monospace; font-size:12px; color:var(--gray-500);">${maskCard(d.cardNumber)}</td>
+          <td class="td-amount">${d.totalAmount.toLocaleString('ko-KR')}??/td>
+          <td>${d.visitor || '-'}</td>
+          <td>
+            ${d.processed ? 
+              `<span class="td-badge status-completed">???뺤궛?꾨즺</span>` : 
+              `<span class="td-badge status-submitted">???뺤궛?湲?/span>`}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function maskCard(num) {
+      if (!num) return '-';
+      const clean = num.replace(/[^0-9]/g, '');
+      if (clean.length <= 4) return num;
+      return '****-****-****-' + clean.slice(-4);
+    }
+
+    // ========== SEARCH & SORT ==========
+    function filterTable() {
+      const q = document.getElementById('searchBox').value.toLowerCase().trim();
+      const rows = document.querySelectorAll('#tableBody tr');
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = !q || text.includes(q) ? '' : 'none';
+      });
+    }
+
+    let sortCol = -1, sortAsc = true;
+    function sortTable(col) {
+      if (sortCol === col) sortAsc = !sortAsc;
+      else { sortCol = col; sortAsc = true; }
+
+      submissions.sort((a, b) => {
+        const fields = [
+          d => d.centerName, d => d.division, d => d.author,
+          d => d.cardNumber, d => d.totalAmount, d => d.visitor,
+          d => d.processed ? 1 : 0
+        ];
+        let va = fields[col](a), vb = fields[col](b);
+        if (typeof va === 'string') { va = va.toLowerCase(); vb = vb.toLowerCase(); }
+        if (va < vb) return sortAsc ? -1 : 1;
+        if (va > vb) return sortAsc ? 1 : -1;
+        return 0;
+      });
+      renderTable();
+    }
+
+    // ========== DETAIL MODAL ==========
+    function openDetail(index) {
+      const d = submissions[index];
+      document.getElementById('modalTitle').textContent = `${d.centerName} ?곸꽭 ?뺣낫`;
+
+      let html = `<div class="detail-grid">
+        <div class="detail-item"><div class="detail-label">?쇳꽣紐?/div><div class="detail-value">${d.centerName || '-'}</div></div>
+        <div class="detail-item"><div class="detail-label">遺꾩냼</div><div class="detail-value">${d.branch || '-'}</div></div>
+        <div class="detail-item"><div class="detail-label">?대떦</div><div class="detail-value">${d.division || '-'}</div></div>
+        <div class="detail-item"><div class="detail-label">諛⑸Ц ?대떦/?ㅼ옣</div><div class="detail-value">${d.visitor || '-'}</div></div>
+        <div class="detail-item"><div class="detail-label">?묒꽦??/div><div class="detail-value">${d.author || '-'}</div></div>
+        <div class="detail-item"><div class="detail-label">?곕씫泥?/div><div class="detail-value">${d.contact || '-'}</div></div>
+        <div class="detail-item"><div class="detail-label">踰뺤씤移대뱶</div><div class="detail-value" style="font-family:monospace;">${d.cardNumber || '-'}</div></div>
+        <div class="detail-item"><div class="detail-label">?쒖텧?쇱떆</div><div class="detail-value">${d.submittedAt || '-'}</div></div>
+      </div>`;
+
+      // Expenses
+      if (d.expenses.length > 0) {
+        html += `<div class="detail-section-title">?뱥 鍮꾩슜 ?댁뿭</div>
+          <table class="detail-expense-table"><thead><tr><th>??ぉ</th><th style="text-align:right;">湲덉븸</th></tr></thead><tbody>`;
+        d.expenses.forEach(e => {
+          html += `<tr><td>${e.item}</td><td style="text-align:right;">${e.amount.toLocaleString('ko-KR')}??/td></tr>`;
+        });
+        html += `<tr><td>?⑷퀎</td><td style="text-align:right; color:var(--lg-red);">${d.totalAmount.toLocaleString('ko-KR')}??/td></tr></tbody></table>`;
+      }
+
+      // Remarks
+      if (d.remarks) {
+        html += `<div class="detail-section-title">?뮠 鍮꾧퀬</div><p style="font-size:13px; color:var(--gray-600); background:var(--gray-50); padding:12px; border-radius:var(--radius-xs);">${d.remarks}</p>`;
+      }
+
+      html += `<div style="margin-top:24px; padding-top:16px; border-top:1px solid var(--gray-200); display:flex; justify-content:space-between; align-items:center;">
+        <button type="button" class="btn btn-secondary" style="border-color:var(--error); color:var(--error); background:transparent;" onclick="deleteEntry('${d.centerName}')">?뿊截????쒖텧 ?댁뿭 ??젣</button>
+        <button type="button" class="btn ${d.processed ? 'btn-secondary' : 'btn-primary'}" onclick="toggleProcessedStatus(${index})">
+          ${d.processed ? '?봽 ?뺤궛 ?湲??곹깭濡?蹂寃? : '???뺤궛 ?꾨즺 泥섎━'}
+        </button>
+      </div>`;
+
+      document.getElementById('modalBody').innerHTML = html;
+      document.getElementById('detailModal').classList.add('active');
+    }
+
+    async function toggleProcessedStatus(index) {
+      const d = submissions[index];
+      d.processed = !d.processed;
+      try {
+        await saveSubmission(d);
+        closeDetailModal();
+        showToast(d.processed ? '?뺤궛 ?꾨즺濡?泥섎━?섏뿀?듬땲??' : '?뺤궛 ?湲곕줈 蹂寃쎈릺?덉뒿?덈떎.', 'success');
+        await loadSubmissionsFromDB();
+      } catch (err) {
+        showToast('?곹깭 蹂寃??ㅽ뙣: ' + err.message, 'error');
+      }
+    }
+
+    async function deleteEntry(centerName) {
+      if (!confirm(`[${centerName}] ?쒖텧 ?댁뿭???뺣쭚 ??젣?섏떆寃좎뒿?덇퉴?`)) return;
+      try {
+        await deleteSubmission(centerName);
+        closeDetailModal();
+        showToast('?깃났?곸쑝濡???젣?섏뿀?듬땲??', 'success');
+        await loadSubmissionsFromDB();
+      } catch (err) {
+        showToast('??젣 ?ㅽ뙣: ' + err.message, 'error');
+      }
+    }
+
+    function closeDetailModal() {
+      document.getElementById('detailModal').classList.remove('active');
+    }
+    document.getElementById('detailModal').addEventListener('click', e => {
+      if (e.target === e.currentTarget) closeDetailModal();
+    });
+
+    function openImg(src, name = 'photo.jpg') {
+      document.getElementById('imgModalSrc').src = src;
+      const download = document.getElementById('imgModalDownload');
+      download.href = src;
+      download.download = name;
+      document.getElementById('imgModal').classList.add('active');
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        document.getElementById('imgModal').classList.remove('active');
+        closeDetailModal();
+      }
+    });
+
+    // ========== EXPORT MASTER EXCEL ==========
+    function exportMasterExcel() {
+      if (submissions.length === 0) return;
+
+      const wb = XLSX.utils.book_new();
+
+      // Sheet 1: ?꾩껜 ?붿빟
+      const summaryHeaders = ['?쇳꽣紐?, '遺꾩냼', '?대떦', '諛⑸Ц ?대떦/?ㅼ옣', '?묒꽦??, '?곕씫泥?, '踰뺤씤移대뱶踰덊샇', '鍮꾩슜?⑷퀎(??', '?쒖텧?쇱떆', '?뺤궛?곹깭', '鍮꾧퀬'];
+      const summaryRows = submissions.map(d => [
+        d.centerName, d.branch || '', d.division,
+        d.visitor || '', d.author, d.contact,
+        d.cardNumber, d.totalAmount,
+        d.submittedAt,
+        d.processed ? '?뺤궛?꾨즺' : '?뺤궛?湲?,
+        d.remarks,
+      ]);
+
+      const ws1 = XLSX.utils.aoa_to_sheet([summaryHeaders, ...summaryRows]);
+      ws1['!cols'] = [
+        { wch: 22 }, { wch: 18 }, { wch: 14 },
+        { wch: 20 }, { wch: 8 }, { wch: 15 },
+        { wch: 20 }, { wch: 12 },
+        { wch: 20 }, { wch: 12 }, { wch: 30 },
+      ];
+      XLSX.utils.book_append_sheet(wb, ws1, '?꾩껜?붿빟');
+
+      // Sheet 2: 鍮꾩슜 ?곸꽭
+      const detailHeaders = ['?쇳꽣紐?, '??ぉ', '湲덉븸(??'];
+      const detailRows = [];
+      submissions.forEach(d => {
+        d.expenses.forEach(e => {
+          detailRows.push([d.centerName, e.item, e.amount]);
+        });
+        detailRows.push([d.centerName, '?뚭퀎', d.totalAmount]);
+        detailRows.push([]); // blank row
+      });
+      const ws2 = XLSX.utils.aoa_to_sheet([detailHeaders, ...detailRows]);
+      ws2['!cols'] = [{ wch: 22 }, { wch: 30 }, { wch: 14 }];
+      XLSX.utils.book_append_sheet(wb, ws2, '鍮꾩슜?곸꽭');
+
+      // Sheet 3: 誘몄젣異??쇳꽣
+      const submittedNames = submissions.map(s => s.centerName);
+      const pendingCenters = CENTER_DATA.filter(c => {
+        const name = c.branch ? `${c.center} ??${c.branch}` : c.center;
+        return !submittedNames.includes(name);
+      });
+      if (pendingCenters.length > 0) {
+        const ph = ['?쇳꽣紐?, '遺꾩냼', '?대떦', '諛⑸Ц ?대떦/?ㅼ옣'];
+        const pr = pendingCenters.map(c => [c.branch ? `${c.center} ??${c.branch}` : c.center, c.branch || '', c.division, c.visitor]);
+        const ws3 = XLSX.utils.aoa_to_sheet([ph, ...pr]);
+        ws3['!cols'] = [{ wch: 22 }, { wch: 18 }, { wch: 14 }, { wch: 20 }];
+        XLSX.utils.book_append_sheet(wb, ws3, '誘몄젣異쒖꽱??);
+      }
+
+      const buf = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      saveAs(new Blob([buf]), `?щ쫫?ъ감_鍮꾩슜?뺤궛_?듯빀_${new Date().toISOString().slice(0, 10)}.xlsx`);
+      showToast('?뱿 ?듯빀 Excel ?뚯씪???ㅼ슫濡쒕뱶?섏뿀?듬땲??', 'success');
+    }
+
+    // ========== CLEAR ==========
+    async function clearAll() {
+      if (submissions.length === 0) return;
+      if (!confirm('紐⑤뱺 ?쒖텧 ?곗씠?곕? 珥덇린?뷀븯?쒓쿋?듬땲源?')) return;
+      try {
+        await clearAllSubmissions();
+        showToast('珥덇린???꾨즺', 'success');
+        await loadSubmissionsFromDB();
+      } catch (err) {
+        showToast('珥덇린???ㅽ뙣: ' + err.message, 'error');
+      }
+    }
+
+    // ========== TOAST ==========
+    function showToast(msg, type = 'info') {
+      const c = document.getElementById('toastContainer'), t = document.createElement('div');
+      t.className = `toast toast-${type}`;
+      const ic = { info: '?뱄툘', success: '??, warning: '?좑툘', error: '?? };
+      t.innerHTML = `<span>${ic[type] || ic.info}</span><span>${msg}</span>`;
+      c.appendChild(t);
+      setTimeout(() => { t.classList.add('toast-exit'); setTimeout(() => t.remove(), 250); }, 4000);
+    }
+  </script>
+</body>
+</html>
