@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>愿由ъ옄 ??쒕낫??| ?щ쫫?ъ감 鍮꾩슜 ?뺤궛</title>
-  <meta name="description" content="2026 李얠븘媛???щ쫫?ъ감 - 鍮꾩슜 ?뺤궛 愿由ъ옄 ??쒕낫??>
+  <title>관리자 대시보드 | 여름포차 비용 정산</title>
+  <meta name="description" content="2026 찾아가는 여름포차 - 비용 정산 관리자 대시보드">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
@@ -357,19 +357,19 @@
   <!-- TOP NAV -->
   <nav class="top-nav">
     <div class="top-nav-left">
-      <span class="top-nav-role"><span class="role-dot"></span> 愿由ъ옄 紐⑤뱶</span>
+      <span class="top-nav-role"><span class="role-dot"></span> 관리자 모드</span>
     </div>
-    <a href="index.html" class="top-nav-link">?뱷 利앸튃 ?쒖텧 ?섏씠吏 ??/a>
+    <a href="index.html" class="top-nav-link">📝 증빙 제출 페이지 →</a>
   </nav>
 
   <!-- HEADER -->
   <header class="header">
     <div class="header-inner">
       <div class="header-left">
-        <h1>?뱤 愿由ъ옄 ??쒕낫??/h1>
-        <p>2026 李얠븘媛???щ쫫?ъ감 쨌 鍮꾩슜 ?뺤궛 痍⑦빀</p>
+        <h1>📊 관리자 대시보드</h1>
+        <p>2026 찾아가는 여름포차 · 비용 정산 취합</p>
       </div>
-      <div class="header-badge">?룼 ADMIN</div>
+      <div class="header-badge">🏮 ADMIN</div>
     </div>
   </header>
 
@@ -379,61 +379,61 @@
     <!-- STATS -->
     <div class="stats">
       <div class="stat-card">
-        <div class="stat-label">?뱿 ?쒖텧 ?꾨즺</div>
+        <div class="stat-label">📥 제출 완료</div>
         <div class="stat-value" id="statSubmitted">0</div>
-        <div class="stat-sub" id="statSubmittedSub">?꾩껜 <span id="statTotal">0</span>媛??쇳꽣 以?/div>
+        <div class="stat-sub" id="statSubmittedSub">전체 <span id="statTotal">0</span>개 센터 중</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">??誘몄젣異?/div>
+        <div class="stat-label">⏳ 미제출</div>
         <div class="stat-value" id="statPending">0</div>
-        <div class="stat-sub">?꾩쭅 ?쒖텧?섏? ?딆? ?쇳꽣</div>
+        <div class="stat-sub">아직 제출하지 않은 센터</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">?뮥 珥?鍮꾩슜</div>
-        <div class="stat-value red" id="statTotalCost">0??/div>
-        <div class="stat-sub">紐⑤뱺 ?쇳꽣 ?⑹궛</div>
+        <div class="stat-label">💰 총 비용</div>
+        <div class="stat-value red" id="statTotalCost">0원</div>
+        <div class="stat-sub">모든 센터 합산</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">???뺤궛 ?꾨즺</div>
+        <div class="stat-label">✅ 정산 완료</div>
         <div class="stat-value green" id="statProcessed">0</div>
-        <div class="stat-sub" id="statProcessedSub">?뺤궛 ?湲?0嫄?/div>
+        <div class="stat-sub" id="statProcessedSub">정산 대기 0건</div>
       </div>
     </div>
 
     <!-- CENTER STATUS -->
     <div class="pending-card" id="pendingCard">
-      <div class="pending-title">?룫 ?쇳꽣蹂??쒖텧 ?꾪솴</div>
+      <div class="pending-title">🏢 센터별 제출 현황</div>
       <div id="centerGrid"></div>
     </div>
 
     <!-- DATA TABLE -->
     <div class="table-card">
       <div class="table-toolbar">
-        <div class="table-title">?뱥 ?뺤궛 ?댁뿭 <span style="font-size:12px; color:var(--gray-400); font-weight:400; margin-left:4px;" id="tableCount"></span></div>
+        <div class="table-title">📋 정산 내역 <span style="font-size:12px; color:var(--gray-400); font-weight:400; margin-left:4px;" id="tableCount"></span></div>
         <div class="table-actions">
-          <input type="text" class="search-box" id="searchBox" placeholder="?쇳꽣紐? ?묒꽦??寃??.." oninput="filterTable()">
-          <button class="btn btn-sm btn-secondary" onclick="clearAll()">?꾩껜 珥덇린??/button>
-          <button class="btn btn-sm btn-primary" id="exportBtn" onclick="exportMasterExcel()" disabled>?뱿 Excel ?대낫?닿린</button>
+          <input type="text" class="search-box" id="searchBox" placeholder="센터명, 작성자 검색..." oninput="filterTable()">
+          <button class="btn btn-sm btn-secondary" onclick="clearAll()">전체 초기화</button>
+          <button class="btn btn-sm btn-primary" id="exportBtn" onclick="exportMasterExcel()" disabled>📥 Excel 내보내기</button>
         </div>
       </div>
       <div style="overflow-x:auto;">
         <table class="data-table">
           <thead>
             <tr>
-              <th onclick="sortTable(0)">?쇳꽣紐?/th>
-              <th onclick="sortTable(1)">?대떦</th>
-              <th onclick="sortTable(2)">?묒꽦??/th>
-              <th onclick="sortTable(3)">踰뺤씤移대뱶</th>
-              <th onclick="sortTable(4)">鍮꾩슜</th>
-              <th onclick="sortTable(5)">諛⑸Ц ?대떦/?ㅼ옣</th>
-              <th onclick="sortTable(6)">?곹깭</th>
+              <th onclick="sortTable(0)">센터명</th>
+              <th onclick="sortTable(1)">담당</th>
+              <th onclick="sortTable(2)">작성자</th>
+              <th onclick="sortTable(3)">법인카드</th>
+              <th onclick="sortTable(4)">비용</th>
+              <th onclick="sortTable(5)">방문 담당/실장</th>
+              <th onclick="sortTable(6)">상태</th>
             </tr>
           </thead>
           <tbody id="tableBody">
             <tr><td colspan="7">
               <div class="empty-state">
-                <span class="empty-icon">?벊</span>
-                <div class="empty-text">?곗씠?곕쿋?댁뒪媛 鍮꾩뼱 ?덉뒿?덈떎. ?쒖텧 ?붾㈃?먯꽌 利앸튃???묒꽦??二쇱꽭??</div>
+                <span class="empty-icon">📭</span>
+                <div class="empty-text">데이터베이스가 비어 있습니다. 제출 화면에서 증빙을 작성해 주세요.</div>
               </div>
             </td></tr>
           </tbody>
@@ -446,13 +446,13 @@
   <!-- PASSCODE AUTH MODAL -->
   <div class="modal-overlay active" id="authModal" style="z-index: 20000; background: var(--gray-900);">
     <div class="success-modal-content" style="max-width: 380px; padding: 40px 24px; border-top: 4px solid var(--lg-red);">
-      <div class="success-icon" style="background: var(--primary-50); color: var(--lg-red); font-size: 32px; width: 64px; height: 64px;">?뵏</div>
-      <div class="success-title" style="font-size: 18px; margin-top: 12px; margin-bottom: 6px;">?뺤궛 ?대떦???몄쬆</div>
-      <p class="success-desc" style="font-size: 13px; margin-bottom: 20px;">愿由ъ옄 ??쒕낫?쒖뿉 ?묒냽?섍린 ?꾪빐<br>?대뱶誘??⑥뒪?뚮뱶瑜??낅젰??二쇱꽭??</p>
+      <div class="success-icon" style="background: var(--primary-50); color: var(--lg-red); font-size: 32px; width: 64px; height: 64px;">🔒</div>
+      <div class="success-title" style="font-size: 18px; margin-top: 12px; margin-bottom: 6px;">정산 담당자 인증</div>
+      <p class="success-desc" style="font-size: 13px; margin-bottom: 20px;">관리자 대시보드에 접속하기 위해<br>어드민 패스워드를 입력해 주세요.</p>
       <div style="margin-bottom: 20px;">
-        <input type="password" id="authPasscode" class="form-input" placeholder="?⑥뒪?뚮뱶 ?낅젰" style="text-align: center; letter-spacing: 4px; font-size: 18px; font-weight: 700; height: 46px;" onkeydown="if(event.key==='Enter') verifyAdminPasscode()">
+        <input type="password" id="authPasscode" class="form-input" placeholder="패스워드 입력" style="text-align: center; letter-spacing: 4px; font-size: 18px; font-weight: 700; height: 46px;" onkeydown="if(event.key==='Enter') verifyAdminPasscode()">
       </div>
-      <button type="button" class="btn btn-primary btn-block" style="height: 44px; font-size: 14px;" onclick="verifyAdminPasscode()">?몄쬆?섍린</button>
+      <button type="button" class="btn btn-primary btn-block" style="height: 44px; font-size: 14px;" onclick="verifyAdminPasscode()">인증하기</button>
     </div>
   </div>
 
@@ -460,7 +460,7 @@
   <div class="modal-overlay" id="detailModal">
     <div class="modal-box">
       <div class="modal-header">
-        <div class="modal-title" id="modalTitle">?곸꽭 ?뺣낫</div>
+        <div class="modal-title" id="modalTitle">상세 정보</div>
         <button class="modal-close-btn" onclick="closeDetailModal()">&times;</button>
       </div>
       <div class="modal-body" id="modalBody"></div>
@@ -476,132 +476,132 @@
   <script>
     // ========== CENTER DATA (same as submission form) ==========
     const CENTER_DATA = [
-      // ===== ?섎룄沅뚯쨷遺 =====
-      { division: '?섎룄沅뚯쨷遺', center: '媛뺣궓異쒖옣?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '媛뺣룞?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '媛뺣턿?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '媛뺤꽌?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '寃쎄린愿묒＜異쒖옣?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅CC&S?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '愿?낆꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '怨좉컼媛移섑쁺?좊떞?? },
-      { division: '?섎룄沅뚯쨷遺', center: '愿묐챸?쒕퉬?ㅼ꽱??, branch: '', visitor: '?섎룄沅뚯뿭?됯컯?뷀??? },
-      { division: '?섎룄沅뚯쨷遺', center: '愿묒쭊?쒕퉬?ㅼ꽱??, branch: '', visitor: 'CC&S?꾨왂?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '援щ━?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '湲덉쿇?쒕퉬?ㅼ꽱??, branch: '', visitor: '?섎룄沅뚯뿭?됯컯?뷀??? },
-      { division: '?섎룄沅뚯쨷遺', center: '源?ъ꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅CC&S?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '?⑤룞?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅CC&S?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '?⑥닔?먯꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '?⑥뼇二쇱꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅CC&S?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '?⑥씤泥쒖꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?섎룄沅뚯뿭?됯컯?뷀??? },
-      { division: '?섎룄沅뚯쨷遺', center: '?몄썝?쒕퉬?ㅼ꽱??, branch: '', visitor: '?섎룄沅뚯뿭?됯컯?뷀??? },
-      { division: '?섎룄沅뚯쨷遺', center: '?移섏꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '怨좉컼媛移섑쁺?좊떞?? },
-      { division: '?섎룄沅뚯쨷遺', center: '?꾨큺?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '?숇?臾몄꽌鍮꾩뒪?쇳꽣', branch: '', visitor: 'HR?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '?숉깂?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '遺泥쒖꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '遺곸닔?먯꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅CC&S?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '遺곸씤泥쒖꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '?쒖븞?곗꽌鍮꾩뒪?쇳꽣', branch: '', visitor: 'HR?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '?쒖씤泥쒖꽌鍮꾩뒪?쇳꽣', branch: '', visitor: 'CC&S遺?덉떎' },
-      { division: '?섎룄沅뚯쨷遺', center: '?쒖큹?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '?깅궓?쒕퉬?ㅼ꽱??, branch: '遺꾨떦?쒕퉬?ㅼ꽱??, visitor: '以묐???웾媛뺥솕??? },
-      { division: '?섎룄沅뚯쨷遺', center: '?깅궓?쒕퉬?ㅼ꽱??, branch: '', visitor: '以묐???웾媛뺥솕??? },
-      { division: '?섎룄沅뚯쨷遺', center: '?≫뙆?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '?덉궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '以묐???웾媛뺥솕??? },
-      { division: '?섎룄沅뚯쨷遺', center: '?덉뼇?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅CC&S?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '?묒＜?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '?묒쿇?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '?곗닔?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅CC&S?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '?곷벑?ъ꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '?ㅼ궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '以묐???웾媛뺥솕??? },
-      { division: '?섎룄沅뚯쨷遺', center: '?⑹궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '?섎룄沅뚯뿭?됯컯?뷀??? },
-      { division: '?섎룄沅뚯쨷遺', center: '?⑹씤異쒖옣?쒕퉬?ㅼ꽱??, branch: '', visitor: 'CC&S??웾媛쒕컻?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '??됱꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅CC&S?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '?섏솗?쒕퉬?ㅼ꽱??, branch: '', visitor: '以묐???웾媛뺥솕??? },
-      { division: '?섎룄沅뚯쨷遺', center: '?섏젙遺?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '?쇱궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '二쎌쟾?쒕퉬?ㅼ꽱??, branch: '', visitor: '以묐???웾媛뺥솕??? },
-      { division: '?섎룄沅뚯쨷遺', center: '異⑸Т濡쒖뿭?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '?뚯＜?쒕퉬?ㅼ꽱??, branch: '', visitor: 'HR?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '?됲깮?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '?꾨━誘몄뾼耳?댁꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '怨좉컼媛移섑쁺?좊떞?? },
-      { division: '?섎룄沅뚯쨷遺', center: '?섎궓?쒕퉬?ㅼ꽱??, branch: '', visitor: 'HR?대떦' },
-      { division: '?섎룄沅뚯쨷遺', center: '?띾???꽌鍮꾩뒪?쇳꽣', branch: '', visitor: 'Contact Center?댁쁺吏?먯떎' },
-      { division: '?섎룄沅뚯쨷遺', center: '?붿젙?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅?섎룄沅뚯쨷遺?대떦' },
-      // ===== ?쒕궓遺 =====
-      { division: '?쒕궓遺', center: '李쎌썝?쒕퉬?ㅼ꽱??, branch: '', visitor: 'CC&S??웾媛쒕컻?대떦' },
-      { division: '?쒕궓遺', center: '?⑤?援ъ꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?댁쇅CC&S?대떦' },
-      { division: '?쒕궓遺', center: '?뺤쿇?쒕퉬?ㅼ꽱??, branch: '', visitor: '寃쎌쁺愿由щ떞?? },
-      { division: '?쒕궓遺', center: '遺곸슱?곗꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅CC&S?대떦' },
-      { division: '?쒕궓遺', center: '?쒕㈃?쒕퉬?ㅼ꽱??, branch: '', visitor: 'CC&S?꾨왂?대떦' },
-      { division: '?쒕궓遺', center: '?댁슫??쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅CC&S?대떦' },
-      { division: '?쒕궓遺', center: '遺곷?援ъ꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅CC&S?대떦' },
-      { division: '?쒕궓遺', center: '吏꾩＜?쒕퉬?ㅼ꽱??, branch: '', visitor: 'HR?대떦' },
-      { division: '?쒕궓遺', center: '留덉궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '寃쎌쁺愿由щ떞?? },
-      { division: '?쒕궓遺', center: '源?댁꽌鍮꾩뒪?쇳꽣', branch: '', visitor: 'HR?대떦' },
-      { division: '?쒕궓遺', center: '?쒖＜?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅CC&S?대떦' },
-      { division: '?쒕궓遺', center: '?쒖쟾二쇱꽌鍮꾩뒪?쇳꽣', branch: '', visitor: 'CC&S??웾媛쒕컻?대떦' },
-      { division: '?쒕궓遺', center: '?숇옒?쒕퉬?ㅼ꽱??, branch: '', visitor: 'HR?대떦' },
-      { division: '?쒕궓遺', center: '?쒓??ъ꽌鍮꾩뒪?쇳꽣', branch: '', visitor: 'HR?대떦' },
-      { division: '?쒕궓遺', center: '?⑥슱?곗꽌鍮꾩뒪?쇳꽣', branch: '', visitor: 'HR?대떦' },
-      { division: '?쒕궓遺', center: '紐⑺룷?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅CC&S?대떦' },
-      { division: '?쒕궓遺', center: '?숆킅二쇱꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅CC&S?대떦' },
-      { division: '?쒕궓遺', center: '?덈룞?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅CC&S?대떦' },
-      { division: '?쒕궓遺', center: '寃쎌궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
-      { division: '?쒕궓遺', center: '寃쎌＜?쒕퉬?ㅼ꽱??, branch: '?곸쿇?쒕퉬?ㅼ꽱??, visitor: '?⑤???웾媛뺥솕??? },
-      { division: '?쒕궓遺', center: '寃쎌＜?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
-      { division: '?쒕궓遺', center: '愿묒궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
-      { division: '?쒕궓遺', center: '援щ??쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
-      { division: '?쒕궓遺', center: '援곗궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
-      { division: '?쒕궓遺', center: '源泥쒖꽌鍮꾩뒪?쇳꽣', branch: '臾멸꼍?쒕퉬?ㅼ꽱??, visitor: '?⑤???웾媛뺥솕??? },
-      { division: '?쒕궓遺', center: '源泥쒖꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒕궓遺?대떦' },
-      { division: '?쒕궓遺', center: '源?댁꽌鍮꾩뒪?쇳꽣', branch: '諛?묒꽌鍮꾩뒪?쇳꽣', visitor: '?⑤???웾媛뺥솕??? },
-      { division: '?쒕궓遺', center: '??곗꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒕궓遺?대떦' },
-      { division: '?쒕궓遺', center: '?숇?援ъ꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒕궓遺?대떦' },
-      { division: '?쒕궓遺', center: '紐⑺룷?쒕퉬?ㅼ꽱??, branch: '?대궓?쒕퉬?ㅼ꽱??, visitor: '?쒕???웾媛뺥솕??? },
-      { division: '?쒕궓遺', center: '?ы븯?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
-      { division: '?쒕궓遺', center: '?쒓킅二쇱꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒕궓遺?대떦' },
-      { division: '?쒕궓遺', center: '?쒕?援ъ꽌鍮꾩뒪?쇳꽣', branch: '嫄곗갹?쒕퉬?ㅼ꽱??, visitor: '?쒕궓遺?대떦' },
-      { division: '?쒕궓遺', center: '?쒕?援ъ꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒕궓遺?대떦' },
-      { division: '?쒕궓遺', center: '?쒖쟾二쇱꽌鍮꾩뒪?쇳꽣', branch: '?뺤쓭?쒕퉬?ㅼ꽱??, visitor: '?쒕???웾媛뺥솕??? },
-      { division: '?쒕궓遺', center: '?쒖쿇?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
-      { division: '?쒕궓遺', center: '?덈룞?쒕퉬?ㅼ꽱??, branch: '?곸＜?쒕퉬?ㅼ꽱??, visitor: '?⑤???웾媛뺥솕??? },
-      { division: '?쒕궓遺', center: '?묒궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
-      { division: '?쒕궓遺', center: '?ъ닔?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
-      { division: '?쒕궓遺', center: '?듭궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
-      { division: '?쒕궓遺', center: '?꾩＜?쒕퉬?ㅼ꽱??, branch: '?⑥썝?쒕퉬?ㅼ꽱??, visitor: '?쒕???웾媛뺥솕??? },
-      { division: '?쒕궓遺', center: '?꾩＜?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
-      { division: '?쒕궓遺', center: '?듭쁺?쒕퉬?ㅼ꽱??, branch: '嫄곗젣?쒕퉬?ㅼ꽱??, visitor: '?⑤???웾媛뺥솕??? },
-      { division: '?쒕궓遺', center: '?듭쁺?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
-      { division: '?쒕궓遺', center: '?ы빆?쒕퉬?ㅼ꽱??, branch: '?곷뜒?쒕퉬?ㅼ꽱??, visitor: '?⑤???웾媛뺥솕??? },
-      { division: '?쒕궓遺', center: '?ы빆?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒕궓遺?대떦' },
-      // ===== 媛뺤썝??=====
-      { division: '媛뺤썝??, center: '媛뺣쫱?쒕퉬?ㅼ꽱??, branch: '?띿큹?쒕퉬?ㅼ꽱??, visitor: '?쒓뎅媛뺤썝?ㅼ옣' },
-      { division: '媛뺤썝??, center: '媛뺣쫱?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅媛뺤썝?ㅼ옣' },
-      { division: '媛뺤썝??, center: '?숉빐?쒕퉬?ㅼ꽱??, branch: '?쒕갚?쒕퉬?ㅼ꽱??, visitor: '?쒓뎅媛뺤썝?ㅼ옣' },
-      { division: '媛뺤썝??, center: '?숉빐?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅媛뺤썝?ㅼ옣' },
-      { division: '媛뺤썝??, center: '?먯＜?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅CC&S?대떦' },
-      { division: '媛뺤썝??, center: '?댁쿇?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅媛뺤썝?ㅼ옣' },
-      { division: '媛뺤썝??, center: '異섏쿇?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅媛뺤썝?ㅼ옣' },
-      // ===== 異⑹껌??=====
-      { division: '異⑹껌??, center: '?⑥껌二쇱꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅異⑹껌?ㅼ옣' },
-      { division: '異⑹껌??, center: '?숇??꾩꽌鍮꾩뒪?쇳꽣', branch: '', visitor: 'Contact Center?댁쁺吏?먯떎' },
-      { division: '異⑹껌??, center: '?붿궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅異⑹껌?ㅼ옣' },
-      { division: '異⑹껌??, center: '?쒕??꾩꽌鍮꾩뒪?쇳꽣', branch: '?쇱궛?쒕퉬?ㅼ꽱??, visitor: '?쒓뎅異⑹껌?ㅼ옣' },
-      { division: '異⑹껌??, center: '?쒕??꾩꽌鍮꾩뒪?쇳꽣', branch: '', visitor: '?쒓뎅CC&S?대떦' },
-      { division: '異⑹껌??, center: '?쒖궛?쒕퉬?ㅼ꽱??, branch: '?띿꽦?쒕퉬?ㅼ꽱??, visitor: '?쒓뎅異⑹껌?ㅼ옣' },
-      { division: '異⑹껌??, center: '?쒖궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅異⑹껌?ㅼ옣' },
-      { division: '異⑹껌??, center: '?몄쥌?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅異⑹껌?ㅼ옣' },
-      { division: '異⑹껌??, center: '?꾩궛?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅異⑹껌?ㅼ옣' },
-      { division: '異⑹껌??, center: '泥쒖븞?쒕퉬?ㅼ꽱??, branch: '', visitor: '?댁쇅CC&S?대떦' },
-      { division: '異⑹껌??, center: '泥?＜?쒕퉬?ㅼ꽱??, branch: '', visitor: '?멸꼍2?' },
-      { division: '異⑹껌??, center: '異⑹＜?쒕퉬?ㅼ꽱??, branch: '', visitor: '?쒓뎅異⑹껌?ㅼ옣' },
-      { division: '異⑹껌??, center: '異⑹＜?쒕퉬?ㅼ꽱??, branch: '?쒖쿇?쒕퉬?ㅼ꽱??, visitor: '?쒓뎅異⑹껌?ㅼ옣' },
+      // ===== 수도권중부 =====
+      { division: '수도권중부', center: '강남출장서비스센터', branch: '', visitor: '한국수도권중부담당' },
+      { division: '수도권중부', center: '강동서비스센터', branch: '', visitor: '한국수도권중부담당' },
+      { division: '수도권중부', center: '강북서비스센터', branch: '', visitor: '한국수도권중부담당' },
+      { division: '수도권중부', center: '강서서비스센터', branch: '', visitor: '한국수도권중부담당' },
+      { division: '수도권중부', center: '경기광주출장서비스센터', branch: '', visitor: '한국CC&S담당' },
+      { division: '수도권중부', center: '관악서비스센터', branch: '', visitor: '고객가치혁신담당' },
+      { division: '수도권중부', center: '광명서비스센터', branch: '', visitor: '수도권역량강화팀장' },
+      { division: '수도권중부', center: '광진서비스센터', branch: '', visitor: 'CC&S전략담당' },
+      { division: '수도권중부', center: '구리서비스센터', branch: '', visitor: '한국수도권중부담당' },
+      { division: '수도권중부', center: '금천서비스센터', branch: '', visitor: '수도권역량강화팀장' },
+      { division: '수도권중부', center: '김포서비스센터', branch: '', visitor: '한국CC&S담당' },
+      { division: '수도권중부', center: '남동서비스센터', branch: '', visitor: '한국CC&S담당' },
+      { division: '수도권중부', center: '남수원서비스센터', branch: '', visitor: '한국수도권중부담당' },
+      { division: '수도권중부', center: '남양주서비스센터', branch: '', visitor: '한국CC&S담당' },
+      { division: '수도권중부', center: '남인천서비스센터', branch: '', visitor: '수도권역량강화팀장' },
+      { division: '수도권중부', center: '노원서비스센터', branch: '', visitor: '수도권역량강화팀장' },
+      { division: '수도권중부', center: '대치서비스센터', branch: '', visitor: '고객가치혁신담당' },
+      { division: '수도권중부', center: '도봉서비스센터', branch: '', visitor: '한국수도권중부담당' },
+      { division: '수도권중부', center: '동대문서비스센터', branch: '', visitor: 'HR담당' },
+      { division: '수도권중부', center: '동탄서비스센터', branch: '', visitor: '한국수도권중부담당' },
+      { division: '수도권중부', center: '부천서비스센터', branch: '', visitor: '한국수도권중부담당' },
+      { division: '수도권중부', center: '북수원서비스센터', branch: '', visitor: '한국CC&S담당' },
+      { division: '수도권중부', center: '북인천서비스센터', branch: '', visitor: '한국수도권중부담당' },
+      { division: '수도권중부', center: '서안산서비스센터', branch: '', visitor: 'HR담당' },
+      { division: '수도권중부', center: '서인천서비스센터', branch: '', visitor: 'CC&S부품실' },
+      { division: '수도권중부', center: '서초서비스센터', branch: '', visitor: '한국수도권중부담당' },
+      { division: '수도권중부', center: '성남서비스센터', branch: '분당서비스센터', visitor: '중부역량강화팀장' },
+      { division: '수도권중부', center: '성남서비스센터', branch: '', visitor: '중부역량강화팀장' },
+      { division: '수도권중부', center: '송파서비스센터', branch: '', visitor: '한국수도권중부담당' },
+      { division: '수도권중부', center: '안산서비스센터', branch: '', visitor: '중부역량강화팀장' },
+      { division: '수도권중부', center: '안양서비스센터', branch: '', visitor: '한국CC&S담당' },
+      { division: '수도권중부', center: '양주서비스센터', branch: '', visitor: '한국수도권중부담당' },
+      { division: '수도권중부', center: '양천서비스센터', branch: '', visitor: '한국수도권중부담당' },
+      { division: '수도권중부', center: '연수서비스센터', branch: '', visitor: '한국CC&S담당' },
+      { division: '수도권중부', center: '영등포서비스센터', branch: '', visitor: '한국수도권중부담당' },
+      { division: '수도권중부', center: '오산서비스센터', branch: '', visitor: '중부역량강화팀장' },
+      { division: '수도권중부', center: '용산서비스센터', branch: '', visitor: '수도권역량강화팀장' },
+      { division: '수도권중부', center: '용인출장서비스센터', branch: '', visitor: 'CC&S역량개발담당' },
+      { division: '수도권중부', center: '은평서비스센터', branch: '', visitor: '한국CC&S담당' },
+      { division: '수도권중부', center: '의왕서비스센터', branch: '', visitor: '중부역량강화팀장' },
+      { division: '수도권중부', center: '의정부서비스센터', branch: '', visitor: '한국수도권중부담당' },
+      { division: '수도권중부', center: '일산서비스센터', branch: '', visitor: '한국수도권중부담당' },
+      { division: '수도권중부', center: '죽전서비스센터', branch: '', visitor: '중부역량강화팀장' },
+      { division: '수도권중부', center: '충무로역서비스센터', branch: '', visitor: '한국수도권중부담당' },
+      { division: '수도권중부', center: '파주서비스센터', branch: '', visitor: 'HR담당' },
+      { division: '수도권중부', center: '평택서비스센터', branch: '', visitor: '한국수도권중부담당' },
+      { division: '수도권중부', center: '프리미엄케어서비스센터', branch: '', visitor: '고객가치혁신담당' },
+      { division: '수도권중부', center: '하남서비스센터', branch: '', visitor: 'HR담당' },
+      { division: '수도권중부', center: '홍대역서비스센터', branch: '', visitor: 'Contact Center운영지원실' },
+      { division: '수도권중부', center: '화정서비스센터', branch: '', visitor: '한국수도권중부담당' },
+      // ===== 서남부 =====
+      { division: '서남부', center: '창원서비스센터', branch: '', visitor: 'CC&S역량개발담당' },
+      { division: '서남부', center: '남대구서비스센터', branch: '', visitor: '해외CC&S담당' },
+      { division: '서남부', center: '덕천서비스센터', branch: '', visitor: '경영관리담당' },
+      { division: '서남부', center: '북울산서비스센터', branch: '', visitor: '한국CC&S담당' },
+      { division: '서남부', center: '서면서비스센터', branch: '', visitor: 'CC&S전략담당' },
+      { division: '서남부', center: '해운대서비스센터', branch: '', visitor: '한국CC&S담당' },
+      { division: '서남부', center: '북대구서비스센터', branch: '', visitor: '한국CC&S담당' },
+      { division: '서남부', center: '진주서비스센터', branch: '', visitor: 'HR담당' },
+      { division: '서남부', center: '마산서비스센터', branch: '', visitor: '경영관리담당' },
+      { division: '서남부', center: '김해서비스센터', branch: '', visitor: 'HR담당' },
+      { division: '서남부', center: '제주서비스센터', branch: '', visitor: '한국CC&S담당' },
+      { division: '서남부', center: '서전주서비스센터', branch: '', visitor: 'CC&S역량개발담당' },
+      { division: '서남부', center: '동래서비스센터', branch: '', visitor: 'HR담당' },
+      { division: '서남부', center: '서귀포서비스센터', branch: '', visitor: 'HR담당' },
+      { division: '서남부', center: '남울산서비스센터', branch: '', visitor: 'HR담당' },
+      { division: '서남부', center: '목포서비스센터', branch: '', visitor: '한국CC&S담당' },
+      { division: '서남부', center: '동광주서비스센터', branch: '', visitor: '한국CC&S담당' },
+      { division: '서남부', center: '안동서비스센터', branch: '', visitor: '한국CC&S담당' },
+      { division: '서남부', center: '경산서비스센터', branch: '', visitor: '서남부담당' },
+      { division: '서남부', center: '경주서비스센터', branch: '영천서비스센터', visitor: '남부역량강화팀장' },
+      { division: '서남부', center: '경주서비스센터', branch: '', visitor: '서남부담당' },
+      { division: '서남부', center: '광산서비스센터', branch: '', visitor: '서남부담당' },
+      { division: '서남부', center: '구미서비스센터', branch: '', visitor: '서남부담당' },
+      { division: '서남부', center: '군산서비스센터', branch: '', visitor: '서남부담당' },
+      { division: '서남부', center: '김천서비스센터', branch: '문경서비스센터', visitor: '남부역량강화팀장' },
+      { division: '서남부', center: '김천서비스센터', branch: '', visitor: '서남부담당' },
+      { division: '서남부', center: '김해서비스센터', branch: '밀양서비스센터', visitor: '남부역량강화팀장' },
+      { division: '서남부', center: '대연서비스센터', branch: '', visitor: '서남부담당' },
+      { division: '서남부', center: '동대구서비스센터', branch: '', visitor: '서남부담당' },
+      { division: '서남부', center: '목포서비스센터', branch: '해남서비스센터', visitor: '서부역량강화팀장' },
+      { division: '서남부', center: '사하서비스센터', branch: '', visitor: '서남부담당' },
+      { division: '서남부', center: '서광주서비스센터', branch: '', visitor: '서남부담당' },
+      { division: '서남부', center: '서대구서비스센터', branch: '거창서비스센터', visitor: '서남부담당' },
+      { division: '서남부', center: '서대구서비스센터', branch: '', visitor: '서남부담당' },
+      { division: '서남부', center: '서전주서비스센터', branch: '정읍서비스센터', visitor: '서부역량강화팀장' },
+      { division: '서남부', center: '순천서비스센터', branch: '', visitor: '서남부담당' },
+      { division: '서남부', center: '안동서비스센터', branch: '영주서비스센터', visitor: '남부역량강화팀장' },
+      { division: '서남부', center: '양산서비스센터', branch: '', visitor: '서남부담당' },
+      { division: '서남부', center: '여수서비스센터', branch: '', visitor: '서남부담당' },
+      { division: '서남부', center: '익산서비스센터', branch: '', visitor: '서남부담당' },
+      { division: '서남부', center: '전주서비스센터', branch: '남원서비스센터', visitor: '서부역량강화팀장' },
+      { division: '서남부', center: '전주서비스센터', branch: '', visitor: '서남부담당' },
+      { division: '서남부', center: '통영서비스센터', branch: '거제서비스센터', visitor: '남부역량강화팀장' },
+      { division: '서남부', center: '통영서비스센터', branch: '', visitor: '서남부담당' },
+      { division: '서남부', center: '포항서비스센터', branch: '영덕서비스센터', visitor: '남부역량강화팀장' },
+      { division: '서남부', center: '포항서비스센터', branch: '', visitor: '서남부담당' },
+      // ===== 강원실 =====
+      { division: '강원실', center: '강릉서비스센터', branch: '속초서비스센터', visitor: '한국강원실장' },
+      { division: '강원실', center: '강릉서비스센터', branch: '', visitor: '한국강원실장' },
+      { division: '강원실', center: '동해서비스센터', branch: '태백서비스센터', visitor: '한국강원실장' },
+      { division: '강원실', center: '동해서비스센터', branch: '', visitor: '한국강원실장' },
+      { division: '강원실', center: '원주서비스센터', branch: '', visitor: '한국CC&S담당' },
+      { division: '강원실', center: '이천서비스센터', branch: '', visitor: '한국강원실장' },
+      { division: '강원실', center: '춘천서비스센터', branch: '', visitor: '한국강원실장' },
+      // ===== 충청실 =====
+      { division: '충청실', center: '남청주서비스센터', branch: '', visitor: '한국충청실장' },
+      { division: '충청실', center: '동대전서비스센터', branch: '', visitor: 'Contact Center운영지원실' },
+      { division: '충청실', center: '둔산서비스센터', branch: '', visitor: '한국충청실장' },
+      { division: '충청실', center: '서대전서비스센터', branch: '논산서비스센터', visitor: '한국충청실장' },
+      { division: '충청실', center: '서대전서비스센터', branch: '', visitor: '한국CC&S담당' },
+      { division: '충청실', center: '서산서비스센터', branch: '홍성서비스센터', visitor: '한국충청실장' },
+      { division: '충청실', center: '서산서비스센터', branch: '', visitor: '한국충청실장' },
+      { division: '충청실', center: '세종서비스센터', branch: '', visitor: '한국충청실장' },
+      { division: '충청실', center: '아산서비스센터', branch: '', visitor: '한국충청실장' },
+      { division: '충청실', center: '천안서비스센터', branch: '', visitor: '해외CC&S담당' },
+      { division: '충청실', center: '청주서비스센터', branch: '', visitor: '노경2팀' },
+      { division: '충청실', center: '충주서비스센터', branch: '', visitor: '한국충청실장' },
+      { division: '충청실', center: '충주서비스센터', branch: '제천서비스센터', visitor: '한국충청실장' },
     ];
 
     // ========== DB UTILITY (Supabase) ==========
     async function getAllSubmissions() {
       if (!supabaseClient) {
-        showToast('Supabase ?ㅼ젙??援ъ꽦?섏? ?딆븯?듬땲?? supabase-config.js ?뚯씪???뺤씤?섏꽭??', 'warning');
+        showToast('Supabase 설정이 구성되지 않았습니다. supabase-config.js 파일을 확인하세요.', 'warning');
         return [];
       }
       const { data, error } = await supabaseClient
@@ -694,18 +694,18 @@
       const pwdInput = document.getElementById('authPasscode');
       const code = pwdInput.value.trim();
       if (!code) {
-        showToast('?⑥뒪?뚮뱶瑜??낅젰?섏꽭??', 'warning');
+        showToast('패스워드를 입력하세요.', 'warning');
         return;
       }
 
       if (!supabaseClient) {
         if (code === '254501') {
-          showToast('濡쒖뺄 紐⑤뱶濡??몄쬆?섏뿀?듬땲?? (Supabase ?ㅼ젙 ?꾩슂)', 'info');
+          showToast('로컬 모드로 인증되었습니다. (Supabase 설정 필요)', 'info');
           localStorage.setItem('summer_pocha_admin_authenticated', 'true');
           document.getElementById('authModal').classList.remove('active');
           loadSubmissionsFromDB();
         } else {
-          showToast('?섎せ???⑥뒪?뚮뱶?낅땲??', 'error');
+          showToast('잘못된 패스워드입니다.', 'error');
           pwdInput.value = '';
           pwdInput.focus();
         }
@@ -721,18 +721,18 @@
         if (error) throw error;
 
         if (count > 0) {
-          showToast('?몄쬆 ?깃났!', 'success');
+          showToast('인증 성공!', 'success');
           localStorage.setItem('summer_pocha_admin_authenticated', 'true');
           document.getElementById('authModal').classList.remove('active');
           loadSubmissionsFromDB();
         } else {
-          showToast('?섎せ???⑥뒪?뚮뱶?낅땲??', 'error');
+          showToast('잘못된 패스워드입니다.', 'error');
           pwdInput.value = '';
           pwdInput.focus();
         }
       } catch (err) {
         console.error(err);
-        showToast('?몄쬆 ?ㅻ쪟: ' + err.message, 'error');
+        showToast('인증 오류: ' + err.message, 'error');
       }
     }
 
@@ -763,7 +763,7 @@
         updateAll();
       } catch (err) {
         console.error('Error loading submissions from DB:', err);
-        showToast('?곗씠?곕쿋?댁뒪 ?쎄린 ?ㅽ뙣', 'error');
+        showToast('데이터베이스 읽기 실패', 'error');
       }
     }
 
@@ -785,10 +785,10 @@
       document.getElementById('statSubmitted').textContent = submitted;
       document.getElementById('statTotal').textContent = total;
       document.getElementById('statPending').textContent = Math.max(0, pending);
-      document.getElementById('statTotalCost').textContent = totalCost.toLocaleString('ko-KR') + '??;
+      document.getElementById('statTotalCost').textContent = totalCost.toLocaleString('ko-KR') + '원';
       
       document.getElementById('statProcessed').textContent = processed;
-      document.getElementById('statProcessedSub').textContent = `?뺤궛 ?湲?${waiting}嫄?;
+      document.getElementById('statProcessedSub').textContent = `정산 대기 ${waiting}건`;
       
       document.getElementById('exportBtn').disabled = submitted === 0;
     }
@@ -811,27 +811,27 @@
       let html = '';
       for (const [division, centers] of Object.entries(groups)) {
         const submittedCount = centers.filter(c => {
-          const name = c.branch ? `${c.center} ??${c.branch}` : c.center;
+          const name = c.branch ? `${c.center} 〉 ${c.branch}` : c.center;
           return !!subMap[name];
         }).length;
 
         html += `<div class="division-section">
-          <div class="division-header">?뱧 ${division} (${submittedCount}/${centers.length})</div>
+          <div class="division-header">📍 ${division} (${submittedCount}/${centers.length})</div>
           <div class="center-grid">
             ${centers.map(c => {
-              const name = c.branch ? `${c.center} ??${c.branch}` : c.center;
+              const name = c.branch ? `${c.center} 〉 ${c.branch}` : c.center;
               const sub = subMap[name];
               
               let stateClass = 'pending';
-              let stateIcon = '燧?;
+              let stateIcon = '⬜';
               
               if (sub) {
                 if (sub.processed) {
                   stateClass = 'completed';
-                  stateIcon = '??;
+                  stateIcon = '✅';
                 } else {
                   stateClass = 'submitted';
-                  stateIcon = '?뱷';
+                  stateIcon = '📝';
                 }
               }
               
@@ -849,23 +849,23 @@
     function renderTable() {
       const tbody = document.getElementById('tableBody');
       if (submissions.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><span class="empty-icon">?벊</span><div class="empty-text">?곗씠?곕쿋?댁뒪媛 鍮꾩뼱 ?덉뒿?덈떎. ?쒖텧 ?붾㈃?먯꽌 利앸튃???묒꽦??二쇱꽭??</div></div></td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><span class="empty-icon">📭</span><div class="empty-text">데이터베이스가 비어 있습니다. 제출 화면에서 증빙을 작성해 주세요.</div></div></td></tr>`;
         document.getElementById('tableCount').textContent = '';
         return;
       }
-      document.getElementById('tableCount').textContent = `(${submissions.length}嫄?`;
+      document.getElementById('tableCount').textContent = `(${submissions.length}건)`;
       tbody.innerHTML = submissions.map((d, i) => `
         <tr onclick="openDetail(${i})">
           <td class="td-center">${d.centerName || '-'}</td>
           <td>${d.division || '-'}</td>
           <td>${d.author || '-'}</td>
           <td style="font-family:monospace; font-size:12px; color:var(--gray-500);">${maskCard(d.cardNumber)}</td>
-          <td class="td-amount">${d.totalAmount.toLocaleString('ko-KR')}??/td>
+          <td class="td-amount">${d.totalAmount.toLocaleString('ko-KR')}원</td>
           <td>${d.visitor || '-'}</td>
           <td>
             ${d.processed ? 
-              `<span class="td-badge status-completed">???뺤궛?꾨즺</span>` : 
-              `<span class="td-badge status-submitted">???뺤궛?湲?/span>`}
+              `<span class="td-badge status-completed">✅ 정산완료</span>` : 
+              `<span class="td-badge status-submitted">⏳ 정산대기</span>`}
           </td>
         </tr>
       `).join('');
@@ -911,38 +911,38 @@
     // ========== DETAIL MODAL ==========
     function openDetail(index) {
       const d = submissions[index];
-      document.getElementById('modalTitle').textContent = `${d.centerName} ?곸꽭 ?뺣낫`;
+      document.getElementById('modalTitle').textContent = `${d.centerName} 상세 정보`;
 
       let html = `<div class="detail-grid">
-        <div class="detail-item"><div class="detail-label">?쇳꽣紐?/div><div class="detail-value">${d.centerName || '-'}</div></div>
-        <div class="detail-item"><div class="detail-label">遺꾩냼</div><div class="detail-value">${d.branch || '-'}</div></div>
-        <div class="detail-item"><div class="detail-label">?대떦</div><div class="detail-value">${d.division || '-'}</div></div>
-        <div class="detail-item"><div class="detail-label">諛⑸Ц ?대떦/?ㅼ옣</div><div class="detail-value">${d.visitor || '-'}</div></div>
-        <div class="detail-item"><div class="detail-label">?묒꽦??/div><div class="detail-value">${d.author || '-'}</div></div>
-        <div class="detail-item"><div class="detail-label">?곕씫泥?/div><div class="detail-value">${d.contact || '-'}</div></div>
-        <div class="detail-item"><div class="detail-label">踰뺤씤移대뱶</div><div class="detail-value" style="font-family:monospace;">${d.cardNumber || '-'}</div></div>
-        <div class="detail-item"><div class="detail-label">?쒖텧?쇱떆</div><div class="detail-value">${d.submittedAt || '-'}</div></div>
+        <div class="detail-item"><div class="detail-label">센터명</div><div class="detail-value">${d.centerName || '-'}</div></div>
+        <div class="detail-item"><div class="detail-label">분소</div><div class="detail-value">${d.branch || '-'}</div></div>
+        <div class="detail-item"><div class="detail-label">담당</div><div class="detail-value">${d.division || '-'}</div></div>
+        <div class="detail-item"><div class="detail-label">방문 담당/실장</div><div class="detail-value">${d.visitor || '-'}</div></div>
+        <div class="detail-item"><div class="detail-label">작성자</div><div class="detail-value">${d.author || '-'}</div></div>
+        <div class="detail-item"><div class="detail-label">연락처</div><div class="detail-value">${d.contact || '-'}</div></div>
+        <div class="detail-item"><div class="detail-label">법인카드</div><div class="detail-value" style="font-family:monospace;">${d.cardNumber || '-'}</div></div>
+        <div class="detail-item"><div class="detail-label">제출일시</div><div class="detail-value">${d.submittedAt || '-'}</div></div>
       </div>`;
 
       // Expenses
       if (d.expenses.length > 0) {
-        html += `<div class="detail-section-title">?뱥 鍮꾩슜 ?댁뿭</div>
-          <table class="detail-expense-table"><thead><tr><th>??ぉ</th><th style="text-align:right;">湲덉븸</th></tr></thead><tbody>`;
+        html += `<div class="detail-section-title">📋 비용 내역</div>
+          <table class="detail-expense-table"><thead><tr><th>항목</th><th style="text-align:right;">금액</th></tr></thead><tbody>`;
         d.expenses.forEach(e => {
-          html += `<tr><td>${e.item}</td><td style="text-align:right;">${e.amount.toLocaleString('ko-KR')}??/td></tr>`;
+          html += `<tr><td>${e.item}</td><td style="text-align:right;">${e.amount.toLocaleString('ko-KR')}원</td></tr>`;
         });
-        html += `<tr><td>?⑷퀎</td><td style="text-align:right; color:var(--lg-red);">${d.totalAmount.toLocaleString('ko-KR')}??/td></tr></tbody></table>`;
+        html += `<tr><td>합계</td><td style="text-align:right; color:var(--lg-red);">${d.totalAmount.toLocaleString('ko-KR')}원</td></tr></tbody></table>`;
       }
 
       // Remarks
       if (d.remarks) {
-        html += `<div class="detail-section-title">?뮠 鍮꾧퀬</div><p style="font-size:13px; color:var(--gray-600); background:var(--gray-50); padding:12px; border-radius:var(--radius-xs);">${d.remarks}</p>`;
+        html += `<div class="detail-section-title">💬 비고</div><p style="font-size:13px; color:var(--gray-600); background:var(--gray-50); padding:12px; border-radius:var(--radius-xs);">${d.remarks}</p>`;
       }
 
       html += `<div style="margin-top:24px; padding-top:16px; border-top:1px solid var(--gray-200); display:flex; justify-content:space-between; align-items:center;">
-        <button type="button" class="btn btn-secondary" style="border-color:var(--error); color:var(--error); background:transparent;" onclick="deleteEntry('${d.centerName}')">?뿊截????쒖텧 ?댁뿭 ??젣</button>
+        <button type="button" class="btn btn-secondary" style="border-color:var(--error); color:var(--error); background:transparent;" onclick="deleteEntry('${d.centerName}')">🗑️ 이 제출 내역 삭제</button>
         <button type="button" class="btn ${d.processed ? 'btn-secondary' : 'btn-primary'}" onclick="toggleProcessedStatus(${index})">
-          ${d.processed ? '?봽 ?뺤궛 ?湲??곹깭濡?蹂寃? : '???뺤궛 ?꾨즺 泥섎━'}
+          ${d.processed ? '🔄 정산 대기 상태로 변경' : '✅ 정산 완료 처리'}
         </button>
       </div>`;
 
@@ -956,22 +956,22 @@
       try {
         await saveSubmission(d);
         closeDetailModal();
-        showToast(d.processed ? '?뺤궛 ?꾨즺濡?泥섎━?섏뿀?듬땲??' : '?뺤궛 ?湲곕줈 蹂寃쎈릺?덉뒿?덈떎.', 'success');
+        showToast(d.processed ? '정산 완료로 처리되었습니다.' : '정산 대기로 변경되었습니다.', 'success');
         await loadSubmissionsFromDB();
       } catch (err) {
-        showToast('?곹깭 蹂寃??ㅽ뙣: ' + err.message, 'error');
+        showToast('상태 변경 실패: ' + err.message, 'error');
       }
     }
 
     async function deleteEntry(centerName) {
-      if (!confirm(`[${centerName}] ?쒖텧 ?댁뿭???뺣쭚 ??젣?섏떆寃좎뒿?덇퉴?`)) return;
+      if (!confirm(`[${centerName}] 제출 내역을 정말 삭제하시겠습니까?`)) return;
       try {
         await deleteSubmission(centerName);
         closeDetailModal();
-        showToast('?깃났?곸쑝濡???젣?섏뿀?듬땲??', 'success');
+        showToast('성공적으로 삭제되었습니다.', 'success');
         await loadSubmissionsFromDB();
       } catch (err) {
-        showToast('??젣 ?ㅽ뙣: ' + err.message, 'error');
+        showToast('삭제 실패: ' + err.message, 'error');
       }
     }
 
@@ -1003,14 +1003,14 @@
 
       const wb = XLSX.utils.book_new();
 
-      // Sheet 1: ?꾩껜 ?붿빟
-      const summaryHeaders = ['?쇳꽣紐?, '遺꾩냼', '?대떦', '諛⑸Ц ?대떦/?ㅼ옣', '?묒꽦??, '?곕씫泥?, '踰뺤씤移대뱶踰덊샇', '鍮꾩슜?⑷퀎(??', '?쒖텧?쇱떆', '?뺤궛?곹깭', '鍮꾧퀬'];
+      // Sheet 1: 전체 요약
+      const summaryHeaders = ['센터명', '분소', '담당', '방문 담당/실장', '작성자', '연락처', '법인카드번호', '비용합계(원)', '제출일시', '정산상태', '비고'];
       const summaryRows = submissions.map(d => [
         d.centerName, d.branch || '', d.division,
         d.visitor || '', d.author, d.contact,
         d.cardNumber, d.totalAmount,
         d.submittedAt,
-        d.processed ? '?뺤궛?꾨즺' : '?뺤궛?湲?,
+        d.processed ? '정산완료' : '정산대기',
         d.remarks,
       ]);
 
@@ -1021,51 +1021,51 @@
         { wch: 20 }, { wch: 12 },
         { wch: 20 }, { wch: 12 }, { wch: 30 },
       ];
-      XLSX.utils.book_append_sheet(wb, ws1, '?꾩껜?붿빟');
+      XLSX.utils.book_append_sheet(wb, ws1, '전체요약');
 
-      // Sheet 2: 鍮꾩슜 ?곸꽭
-      const detailHeaders = ['?쇳꽣紐?, '??ぉ', '湲덉븸(??'];
+      // Sheet 2: 비용 상세
+      const detailHeaders = ['센터명', '항목', '금액(원)'];
       const detailRows = [];
       submissions.forEach(d => {
         d.expenses.forEach(e => {
           detailRows.push([d.centerName, e.item, e.amount]);
         });
-        detailRows.push([d.centerName, '?뚭퀎', d.totalAmount]);
+        detailRows.push([d.centerName, '소계', d.totalAmount]);
         detailRows.push([]); // blank row
       });
       const ws2 = XLSX.utils.aoa_to_sheet([detailHeaders, ...detailRows]);
       ws2['!cols'] = [{ wch: 22 }, { wch: 30 }, { wch: 14 }];
-      XLSX.utils.book_append_sheet(wb, ws2, '鍮꾩슜?곸꽭');
+      XLSX.utils.book_append_sheet(wb, ws2, '비용상세');
 
-      // Sheet 3: 誘몄젣異??쇳꽣
+      // Sheet 3: 미제출 센터
       const submittedNames = submissions.map(s => s.centerName);
       const pendingCenters = CENTER_DATA.filter(c => {
-        const name = c.branch ? `${c.center} ??${c.branch}` : c.center;
+        const name = c.branch ? `${c.center} 〉 ${c.branch}` : c.center;
         return !submittedNames.includes(name);
       });
       if (pendingCenters.length > 0) {
-        const ph = ['?쇳꽣紐?, '遺꾩냼', '?대떦', '諛⑸Ц ?대떦/?ㅼ옣'];
-        const pr = pendingCenters.map(c => [c.branch ? `${c.center} ??${c.branch}` : c.center, c.branch || '', c.division, c.visitor]);
+        const ph = ['센터명', '분소', '담당', '방문 담당/실장'];
+        const pr = pendingCenters.map(c => [c.branch ? `${c.center} 〉 ${c.branch}` : c.center, c.branch || '', c.division, c.visitor]);
         const ws3 = XLSX.utils.aoa_to_sheet([ph, ...pr]);
         ws3['!cols'] = [{ wch: 22 }, { wch: 18 }, { wch: 14 }, { wch: 20 }];
-        XLSX.utils.book_append_sheet(wb, ws3, '誘몄젣異쒖꽱??);
+        XLSX.utils.book_append_sheet(wb, ws3, '미제출센터');
       }
 
       const buf = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-      saveAs(new Blob([buf]), `?щ쫫?ъ감_鍮꾩슜?뺤궛_?듯빀_${new Date().toISOString().slice(0, 10)}.xlsx`);
-      showToast('?뱿 ?듯빀 Excel ?뚯씪???ㅼ슫濡쒕뱶?섏뿀?듬땲??', 'success');
+      saveAs(new Blob([buf]), `여름포차_비용정산_통합_${new Date().toISOString().slice(0, 10)}.xlsx`);
+      showToast('📥 통합 Excel 파일이 다운로드되었습니다!', 'success');
     }
 
     // ========== CLEAR ==========
     async function clearAll() {
       if (submissions.length === 0) return;
-      if (!confirm('紐⑤뱺 ?쒖텧 ?곗씠?곕? 珥덇린?뷀븯?쒓쿋?듬땲源?')) return;
+      if (!confirm('모든 제출 데이터를 초기화하시겠습니까?')) return;
       try {
         await clearAllSubmissions();
-        showToast('珥덇린???꾨즺', 'success');
+        showToast('초기화 완료', 'success');
         await loadSubmissionsFromDB();
       } catch (err) {
-        showToast('珥덇린???ㅽ뙣: ' + err.message, 'error');
+        showToast('초기화 실패: ' + err.message, 'error');
       }
     }
 
@@ -1073,7 +1073,7 @@
     function showToast(msg, type = 'info') {
       const c = document.getElementById('toastContainer'), t = document.createElement('div');
       t.className = `toast toast-${type}`;
-      const ic = { info: '?뱄툘', success: '??, warning: '?좑툘', error: '?? };
+      const ic = { info: 'ℹ️', success: '✅', warning: '⚠️', error: '❌' };
       t.innerHTML = `<span>${ic[type] || ic.info}</span><span>${msg}</span>`;
       c.appendChild(t);
       setTimeout(() => { t.classList.add('toast-exit'); setTimeout(() => t.remove(), 250); }, 4000);
