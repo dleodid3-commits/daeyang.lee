@@ -809,7 +809,6 @@
     // ========== STATE ==========
     let selectedCenter = null;
     const appState = {};
-    let isSubmitted = false;
 
     // ========== INIT ==========
     document.addEventListener('DOMContentLoaded', () => {
@@ -1045,8 +1044,8 @@
 
         await saveSubmission(submission);
 
-        // Mark as submitted to bypass reload warning
-        isSubmitted = true;
+        // Remove listener to bypass reload warning
+        window.removeEventListener('beforeunload', beforeUnloadHandler);
 
         // Show Success Modal
         document.getElementById('successModal').classList.add('active');
@@ -1070,11 +1069,12 @@
       return (b/1048576).toFixed(1)+' MB';
     }
 
-    window.addEventListener('beforeunload', e => {
-      if(!isSubmitted && document.getElementById('centerSearch').value) {
+    const beforeUnloadHandler = e => {
+      if(document.getElementById('centerSearch').value) {
         e.preventDefault(); e.returnValue = '';
       }
-    });
+    };
+    window.addEventListener('beforeunload', beforeUnloadHandler);
   </script>
 </body>
 </html>
