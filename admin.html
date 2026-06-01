@@ -444,7 +444,7 @@
   </main>
 
   <!-- PASSCODE AUTH MODAL -->
-  <div class="modal-overlay active" id="authModal" style="z-index: 20000; background: var(--gray-900);">
+  <div class="modal-overlay" id="authModal" style="z-index: 20000; background: var(--gray-900); display: none;">
     <div class="success-modal-content" style="max-width: 380px; padding: 40px 24px; border-top: 4px solid var(--lg-red);">
       <div class="success-icon" style="background: var(--primary-50); color: var(--lg-red); font-size: 32px; width: 64px; height: 64px;">🔒</div>
       <div class="success-title" style="font-size: 18px; margin-top: 12px; margin-bottom: 6px;">정산 담당자 인증</div>
@@ -680,14 +680,13 @@
     });
 
     function checkAdminAuth() {
-      const isAuth = localStorage.getItem('summer_pocha_admin_authenticated') === 'true';
-      if (isAuth) {
-        document.getElementById('authModal').classList.remove('active');
-        loadSubmissionsFromDB();
-      } else {
-        document.getElementById('authModal').classList.add('active');
-        setTimeout(() => document.getElementById('authPasscode').focus(), 150);
+      // Passcode authentication bypassed: Load submissions immediately.
+      const modal = document.getElementById('authModal');
+      if (modal) {
+        modal.classList.remove('active');
+        modal.style.display = 'none';
       }
+      loadSubmissionsFromDB();
     }
 
     async function verifyAdminPasscode() {
