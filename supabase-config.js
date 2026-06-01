@@ -1,8 +1,8 @@
-// 2026 李얠븘媛???щ쫫?ъ감 鍮꾩슜 ?뺤궛 - Supabase ?ㅼ젙 ?뚯씪
-// Supabase ?꾨줈?앺듃??Settings -> API 硫붾돱?먯꽌 Project URL怨?API Key (anon public)瑜?蹂듭궗?섏뿬 ?낅젰??二쇱꽭??
+// 2026 찾아가는 여름포차 비용 정산 - Supabase 설정 파일
+// Supabase 프로젝트의 Settings -> API 메뉴에서 Project URL과 API Key (anon public)를 복사하여 입력해 주세요.
 
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+const SUPABASE_URL = 'https://iwsukptncchchszwftrt.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_mhfo5k0UIMehDDcPiaUQOA_3MUusJwW';
 
 let supabaseClient = null;
 
