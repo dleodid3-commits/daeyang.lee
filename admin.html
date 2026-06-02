@@ -602,22 +602,47 @@
     // ========== HANDLER UTILITY ==========
     function getHandler(visitor, division) {
       if (!visitor) return '-';
-      const hqRoles = [
-        '고객가치혁신담당',
-        'CC&S전략담당',
-        'CC&S역량개발담당',
-        '한국CC&S담당',
-        '해외CC&S담당',
-        '경영관리담당',
-        'CC&S부품실',
-        'Contact Center운영지원실'
-      ];
-      if (hqRoles.includes(visitor)) return visitor;
-      if (visitor === 'HR담당') return 'HR';
+      
+      const v = visitor.trim();
+      
+      // 1. 본사/특정 담당 부서 매핑 -> 모두 HR이 주관
+      const exactMappings = {
+        '고객가치혁신담당': 'HR',
+        'CC&S전략담당': 'HR',
+        'CC&S역량개발담당': 'HR',
+        '한국CC&S담당': 'HR',
+        '해외CC&S담당': 'HR',
+        '경영관리담당': 'HR',
+        'CC&S부품실': 'HR',
+        'Contact Center운영지원실': 'HR',
+        'HR담당': 'HR',
+        '노경2팀': 'HR'
+      };
+      
+      if (exactMappings[v]) {
+        return exactMappings[v];
+      }
+      
+      // 2. 방문 임원 키워드에 따른 권역별 주관 분류 (visitor 기준)
+      if (v.includes('수도권중부') || v.includes('중부역량') || v.includes('수도권역량') || v.includes('수도전역강화') || v.includes('수도전역')) {
+        return '수도권중부담당';
+      }
+      if (v.includes('서남부') || v.includes('남부역량') || v.includes('서부역량')) {
+        return '서남부담당';
+      }
+      if (v.includes('강원')) {
+        return '강원실';
+      }
+      if (v.includes('충청')) {
+        return '충청실';
+      }
+      
+      // 3. 백업용 (위의 규칙에 걸리지 않는 경우에만 division 사용)
       if (division === '수도권중부') return '수도권중부담당';
       if (division === '서남부') return '서남부담당';
       if (division === '강원실') return '강원실';
       if (division === '충청실') return '충청실';
+      
       return division || '지역담당/실';
     }
 
