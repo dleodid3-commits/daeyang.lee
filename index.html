@@ -485,6 +485,80 @@
     .top-nav-link:hover { color: #fff; background: rgba(255,255,255,0.1); }
     .top-nav-sep { color: var(--gray-600); }
 
+    /* ===== PASTE ZONE ===== */
+    .paste-zone {
+      border: 2px dashed var(--gray-300);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      text-align: center;
+      background: var(--gray-50);
+      cursor: pointer;
+      outline: none;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .paste-zone:focus {
+      border-color: var(--lg-red);
+      background: var(--primary-50);
+      box-shadow: 0 0 0 4px rgba(165,0,52,0.06);
+    }
+    .paste-icon {
+      font-size: 28px;
+    }
+    .paste-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray-700);
+    }
+    .paste-hint {
+      font-size: 11px;
+      color: var(--gray-400);
+    }
+    .photo-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .photo-preview-item {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow);
+    }
+    .photo-preview-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .photo-delete-btn {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      border: none;
+      font-size: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      transition: var(--transition);
+    }
+    .photo-delete-btn:hover {
+      background: rgba(239,68,68,0.9);
+    }
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 640px) {
       .hero { padding: 36px 16px 48px; }
@@ -606,6 +680,23 @@
         </div>
       </section>
 
+      <!-- ===== 3-2. 행사 사진 붙여넣기 ===== -->
+      <section id="sec-photos" class="form-card">
+        <div class="card-header">
+          <div class="card-icon rose">📷</div>
+          <div>
+            <div class="card-title">행사 사진</div>
+            <div class="card-subtitle">캡처한 이미지나 복사한 이미지를 아래 박스를 클릭한 후 붙여넣기(Ctrl + V) 하세요 (선택)</div>
+          </div>
+        </div>
+        <div class="paste-zone" id="pasteZone" tabindex="0">
+          <span class="paste-icon">📋</span>
+          <span class="paste-text">여기를 클릭한 후 이미지 붙여넣기 (Ctrl + V)</span>
+          <span class="paste-hint">이미지 파일이나 스크린샷을 복사(Ctrl + C)한 뒤 붙여넣어 주세요 (최대 3장)</span>
+        </div>
+        <div class="photo-preview-grid" id="photoPreviewGrid"></div>
+      </section>
+
       <!-- ===== 4. 비고 ===== -->
       <section id="sec-remarks" class="form-card">
         <div class="card-header">
@@ -676,6 +767,7 @@
           submitted_at: sub.submittedAt,
           expenses: sub.expenses,
           total_amount: sub.totalAmount,
+          event_photos: sub.eventPhotos || [],
           remarks: sub.remarks
         }, { onConflict: 'center_name' });
 
@@ -809,6 +901,7 @@
     // ========== STATE ==========
     let selectedCenter = null;
     const appState = {};
+    const eventPhotos = []; // array of compressed Base64 strings
 
     // ========== INIT ==========
     document.addEventListener('DOMContentLoaded', () => {
@@ -816,6 +909,7 @@
       buildCenterDropdown();
       addExpenseRow();
       loadDraft();
+      setupPasteZone();
       document.addEventListener('click', (e) => {
         if (!e.target.closest('.select-search-wrap')) closeCenterDropdown();
       });
@@ -831,6 +925,95 @@
       if (!supabaseClient) {
         showToast('⚠️ supabase-config.js에 Supabase 설정값(URL 및 Key)을 먼저 채워주세요!', 'error');
       }
+    }
+
+    // ========== PASTE PHOTO UTILITIES ==========
+    function setupPasteZone() {
+      const zone = document.getElementById('pasteZone');
+      if (!zone) return;
+      
+      zone.addEventListener('paste', e => {
+        const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+        let imagePasted = false;
+        
+        for (const item of items) {
+          if (item.kind === 'file' && item.type.startsWith('image/')) {
+            imagePasted = true;
+            if (eventPhotos.length >= 3) {
+              showToast('사진은 최대 3장까지만 등록 가능합니다.', 'warning');
+              break;
+            }
+            const blob = item.getAsFile();
+            const reader = new FileReader();
+            reader.onload = function(event) {
+              compressAndAddPhoto(event.target.result);
+            };
+            reader.readAsDataURL(blob);
+          }
+        }
+        
+        if (!imagePasted) {
+          showToast('클립보드에 복사된 이미지가 없습니다. 이미지 복사(Ctrl+C) 후 붙여넣어 주세요.', 'warning');
+        }
+      });
+      
+      zone.addEventListener('click', () => {
+        zone.focus();
+      });
+    }
+
+    function compressAndAddPhoto(base64) {
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+        
+        const MAX_SIZE = 800; // Resize to max 800px width/height for database storage efficiency
+        if (width > height) {
+          if (width > MAX_SIZE) {
+            height = Math.round((height * MAX_SIZE) / width);
+            width = MAX_SIZE;
+          }
+        } else {
+          if (height > MAX_SIZE) {
+            width = Math.round((width * MAX_SIZE) / height);
+            height = MAX_SIZE;
+          }
+        }
+        
+        canvas.width = width;
+        canvas.height = height;
+        
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6); // Compress to 60% quality JPEG
+        eventPhotos.push(compressedBase64);
+        renderPhotoPreviews();
+        showToast('사진이 붙여넣기 되었습니다.', 'success');
+      };
+      img.src = base64;
+    }
+
+    function renderPhotoPreviews() {
+      const grid = document.getElementById('photoPreviewGrid');
+      grid.innerHTML = '';
+      eventPhotos.forEach((src, idx) => {
+        const item = document.createElement('div');
+        item.className = 'photo-preview-item';
+        item.innerHTML = `
+          <img src="${src}" alt="Preview">
+          <button type="button" class="photo-delete-btn" onclick="deletePhoto(${idx})">✕</button>
+        `;
+        grid.appendChild(item);
+      });
+    }
+
+    function deletePhoto(idx) {
+      eventPhotos.splice(idx, 1);
+      renderPhotoPreviews();
+      showToast('사진이 삭제되었습니다.', 'info');
     }
 
     // ========== CENTER SEARCH DROPDOWN ==========
@@ -938,6 +1121,7 @@
         contact: document.getElementById('contactField').value,
         cardNumber: document.getElementById('cardNumber').value,
         expenses: exps,
+        eventPhotos: eventPhotos,
         remarks: document.getElementById('remarksField').value,
       };
     }
@@ -961,6 +1145,11 @@
         if(d.contact) document.getElementById('contactField').value = d.contact;
         if(d.cardNumber) document.getElementById('cardNumber').value = d.cardNumber;
         if(d.remarks) document.getElementById('remarksField').value = d.remarks;
+        if(d.eventPhotos?.length) {
+          eventPhotos.length = 0;
+          eventPhotos.push(...d.eventPhotos);
+          renderPhotoPreviews();
+        }
         if(d.expenses?.length) {
           document.getElementById('expenseBody').innerHTML = '';
           d.expenses.forEach(exp => {
@@ -1037,7 +1226,7 @@
             amount: numVal(exp.amount)
           })),
           totalAmount: total,
-          eventPhotos: [],
+          eventPhotos: formData.eventPhotos || [],
           receiptPhotos: [],
           remarks: formData.remarks,
         };
