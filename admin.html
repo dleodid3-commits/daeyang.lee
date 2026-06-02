@@ -426,11 +426,12 @@
               <th onclick="sortTable(3)">법인카드</th>
               <th onclick="sortTable(4)">비용</th>
               <th onclick="sortTable(5)">방문 담당/실장</th>
-              <th onclick="sortTable(6)">상태</th>
+              <th onclick="sortTable(6)">처리 담당</th>
+              <th onclick="sortTable(7)">상태</th>
             </tr>
           </thead>
           <tbody id="tableBody">
-            <tr><td colspan="7">
+            <tr><td colspan="8">
               <div class="empty-state">
                 <span class="empty-icon">📭</span>
                 <div class="empty-text">데이터베이스가 비어 있습니다. 제출 화면에서 증빙을 작성해 주세요.</div>
@@ -597,6 +598,28 @@
       { division: '충청실', center: '충주서비스센터', branch: '', visitor: '한국충청실장' },
       { division: '충청실', center: '충주서비스센터', branch: '제천서비스센터', visitor: '한국충청실장' },
     ];
+
+    // ========== HANDLER UTILITY ==========
+    function getHandler(visitor, division) {
+      if (!visitor) return '-';
+      const hqRoles = [
+        '고객가치혁신담당',
+        'CC&S전략담당',
+        'CC&S역량개발담당',
+        '한국CC&S담당',
+        '해외CC&S담당',
+        '경영관리담당',
+        'CC&S부품실',
+        'Contact Center운영지원실'
+      ];
+      if (hqRoles.includes(visitor)) return visitor;
+      if (visitor === 'HR담당') return 'HR';
+      if (division === '수도권중부') return '수도권중부담당';
+      if (division === '서남부') return '서남부담당';
+      if (division === '강원실') return '강원실';
+      if (division === '충청실') return '충청실';
+      return division || '지역담당/실';
+    }
 
     // ========== DB UTILITY (Supabase) ==========
     async function getAllSubmissions() {
@@ -848,7 +871,7 @@
     function renderTable() {
       const tbody = document.getElementById('tableBody');
       if (submissions.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><span class="empty-icon">📭</span><div class="empty-text">데이터베이스가 비어 있습니다. 제출 화면에서 증빙을 작성해 주세요.</div></div></td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><span class="empty-icon">📭</span><div class="empty-text">데이터베이스가 비어 있습니다. 제출 화면에서 증빙을 작성해 주세요.</div></div></td></tr>`;
         document.getElementById('tableCount').textContent = '';
         return;
       }
@@ -861,6 +884,7 @@
           <td style="font-family:monospace; font-size:12px; color:var(--gray-500);">${maskCard(d.cardNumber)}</td>
           <td class="td-amount">${d.totalAmount.toLocaleString('ko-KR')}원</td>
           <td>${d.visitor || '-'}</td>
+          <td style="font-weight:500; color:var(--gray-700);">${getHandler(d.visitor, d.division)}</td>
           <td>
             ${d.processed ? 
               `<span class="td-badge status-completed">✅ 정산완료</span>` : 
@@ -896,6 +920,7 @@
         const fields = [
           d => d.centerName, d => d.division, d => d.author,
           d => d.cardNumber, d => d.totalAmount, d => d.visitor,
+          d => getHandler(d.visitor, d.division),
           d => d.processed ? 1 : 0
         ];
         let va = fields[col](a), vb = fields[col](b);
@@ -917,6 +942,7 @@
         <div class="detail-item"><div class="detail-label">분소</div><div class="detail-value">${d.branch || '-'}</div></div>
         <div class="detail-item"><div class="detail-label">담당</div><div class="detail-value">${d.division || '-'}</div></div>
         <div class="detail-item"><div class="detail-label">방문 담당/실장</div><div class="detail-value">${d.visitor || '-'}</div></div>
+        <div class="detail-item"><div class="detail-label">처리 담당</div><div class="detail-value" style="font-weight:600; color:var(--lg-red);">${getHandler(d.visitor, d.division)}</div></div>
         <div class="detail-item"><div class="detail-label">작성자</div><div class="detail-value">${d.author || '-'}</div></div>
         <div class="detail-item"><div class="detail-label">연락처</div><div class="detail-value">${d.contact || '-'}</div></div>
         <div class="detail-item"><div class="detail-label">법인카드</div><div class="detail-value" style="font-family:monospace;">${d.cardNumber || '-'}</div></div>
@@ -1003,10 +1029,10 @@
       const wb = XLSX.utils.book_new();
 
       // Sheet 1: 전체 요약
-      const summaryHeaders = ['센터명', '분소', '담당', '방문 담당/실장', '작성자', '연락처', '법인카드번호', '비용합계(원)', '제출일시', '정산상태', '비고'];
+      const summaryHeaders = ['센터명', '분소', '담당', '방문 담당/실장', '처리 담당', '작성자', '연락처', '법인카드번호', '비용합계(원)', '제출일시', '정산상태', '비고'];
       const summaryRows = submissions.map(d => [
         d.centerName, d.branch || '', d.division,
-        d.visitor || '', d.author, d.contact,
+        d.visitor || '', getHandler(d.visitor, d.division), d.author, d.contact,
         d.cardNumber, d.totalAmount,
         d.submittedAt,
         d.processed ? '정산완료' : '정산대기',
@@ -1016,7 +1042,7 @@
       const ws1 = XLSX.utils.aoa_to_sheet([summaryHeaders, ...summaryRows]);
       ws1['!cols'] = [
         { wch: 22 }, { wch: 18 }, { wch: 14 },
-        { wch: 20 }, { wch: 8 }, { wch: 15 },
+        { wch: 20 }, { wch: 22 }, { wch: 8 }, { wch: 15 },
         { wch: 20 }, { wch: 12 },
         { wch: 20 }, { wch: 12 }, { wch: 30 },
       ];
