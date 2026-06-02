@@ -498,8 +498,10 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
+      min-height: 160px;
       margin-top: 10px;
+      position: relative;
     }
     .paste-zone:focus {
       border-color: var(--lg-red);
@@ -518,42 +520,46 @@
       font-size: 11px;
       color: var(--gray-400);
     }
-    .photo-preview-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-      gap: 12px;
-      margin-top: 16px;
+    .paste-default {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
     }
-    .photo-preview-item {
+    .paste-preview {
+      width: 100%;
+      max-height: 240px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       position: relative;
-      aspect-ratio: 1;
+    }
+    .paste-preview img {
+      max-width: 100%;
+      max-height: 240px;
+      object-fit: contain;
       border-radius: var(--radius-sm);
-      overflow: hidden;
       border: 1px solid var(--gray-200);
       box-shadow: var(--shadow);
     }
-    .photo-preview-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
     .photo-delete-btn {
       position: absolute;
-      top: 4px;
-      right: 4px;
-      width: 20px;
-      height: 20px;
+      top: -10px;
+      right: -10px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.7);
       color: #fff;
       border: none;
-      font-size: 10px;
+      font-size: 12px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       line-height: 1;
       transition: var(--transition);
+      z-index: 5;
     }
     .photo-delete-btn:hover {
       background: rgba(239,68,68,0.9);
@@ -690,11 +696,16 @@
           </div>
         </div>
         <div class="paste-zone" id="pasteZone" tabindex="0">
-          <span class="paste-icon">📋</span>
-          <span class="paste-text">여기를 클릭한 후 이미지 붙여넣기 (Ctrl + V)</span>
-          <span class="paste-hint">이미지 파일이나 스크린샷을 복사(Ctrl + C)한 뒤 붙여넣어 주세요 (최대 3장)</span>
+          <div class="paste-default" id="pasteDefault">
+            <span class="paste-icon">📋</span>
+            <span class="paste-text">여기를 클릭한 후 이미지 붙여넣기 (Ctrl + V)</span>
+            <span class="paste-hint">이미지 파일이나 스크린샷을 복사(Ctrl + C)한 뒤 붙여넣어 주세요 (1장만 등록 가능)</span>
+          </div>
+          <div class="paste-preview" id="pastePreview" style="display: none;">
+            <img id="pastePreviewImg" src="" alt="Preview">
+            <button type="button" class="photo-delete-btn" onclick="deletePhoto(event)">✕</button>
+          </div>
         </div>
-        <div class="photo-preview-grid" id="photoPreviewGrid"></div>
       </section>
 
       <!-- ===== 4. 비고 ===== -->
@@ -939,8 +950,8 @@
         for (const item of items) {
           if (item.kind === 'file' && item.type.startsWith('image/')) {
             imagePasted = true;
-            if (eventPhotos.length >= 3) {
-              showToast('사진은 최대 3장까지만 등록 가능합니다.', 'warning');
+            if (eventPhotos.length >= 1) {
+              showToast('사진은 1장만 등록 가능합니다. 기존 사진을 삭제하고 붙여넣어 주세요.', 'warning');
               break;
             }
             const blob = item.getAsFile();
@@ -949,6 +960,7 @@
               compressAndAddPhoto(event.target.result);
             };
             reader.readAsDataURL(blob);
+            break; // 1장만 처리하므로 루프 중단
           }
         }
         
@@ -969,7 +981,7 @@
         let width = img.width;
         let height = img.height;
         
-        const MAX_SIZE = 800; // Resize to max 800px width/height for database storage efficiency
+        const MAX_SIZE = 800; // 용량 효율을 위해 최대 800px로 리사이징
         if (width > height) {
           if (width > MAX_SIZE) {
             height = Math.round((height * MAX_SIZE) / width);
@@ -988,7 +1000,7 @@
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
         
-        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6); // Compress to 60% quality JPEG
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6); // 60% 압축율 적용
         eventPhotos.push(compressedBase64);
         renderPhotoPreviews();
         showToast('사진이 붙여넣기 되었습니다.', 'success');
@@ -997,21 +1009,24 @@
     }
 
     function renderPhotoPreviews() {
-      const grid = document.getElementById('photoPreviewGrid');
-      grid.innerHTML = '';
-      eventPhotos.forEach((src, idx) => {
-        const item = document.createElement('div');
-        item.className = 'photo-preview-item';
-        item.innerHTML = `
-          <img src="${src}" alt="Preview">
-          <button type="button" class="photo-delete-btn" onclick="deletePhoto(${idx})">✕</button>
-        `;
-        grid.appendChild(item);
-      });
+      const def = document.getElementById('pasteDefault');
+      const prev = document.getElementById('pastePreview');
+      const img = document.getElementById('pastePreviewImg');
+      
+      if (eventPhotos.length > 0) {
+        def.style.display = 'none';
+        prev.style.display = 'flex';
+        img.src = eventPhotos[0];
+      } else {
+        def.style.display = 'flex';
+        prev.style.display = 'none';
+        img.src = '';
+      }
     }
 
-    function deletePhoto(idx) {
-      eventPhotos.splice(idx, 1);
+    function deletePhoto(event) {
+      if (event) event.stopPropagation(); // 붙여넣기 박스가 클릭/포커스되는 이벤트 전파 차단
+      eventPhotos.length = 0;
       renderPhotoPreviews();
       showToast('사진이 삭제되었습니다.', 'info');
     }
